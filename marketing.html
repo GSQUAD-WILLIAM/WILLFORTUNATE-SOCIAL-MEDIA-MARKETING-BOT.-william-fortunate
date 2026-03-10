@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add favicon to prevent 404 error -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <!-- Load Supabase - errors are caught and ignored -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Your original styles */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            width: 90%;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #f0f0f0;
+            color: #333;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .back-button:active {
+            transform: scale(0.95);
+        }
+
+        .logo-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #4CAF50;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .bot-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .bot-title {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .click-text {
+            color: #888;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .action-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .action-button:hover {
+            transform: scale(1.02);
+            background-color: #45a049;
+        }
+
+        .action-button:active {
+            transform: scale(0.98);
+        }
+
+        /* Hidden status - no visual impact */
+        .hidden-status {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <a href="javascript:history.back()" class="back-button" title="Go back">←</a>
+
+        <!-- Logo - loaded directly from Supabase public URL -->
+        <img src="https://xoerkbmtucvzoilxdupf.supabase.co/storage/v1/object/public/media/logo.jpeg"
+            alt="WILLFORTUNATE Logo" class="logo-image" id="mainLogo"
+            onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%234CAF50\' opacity=\'0.2\'/%3E%3Ctext x=\'50\' y=\'55\' font-size=\'40\' text-anchor=\'middle\' fill=\'%23333\' font-family=\'Arial\'%3EWF%3C/text%3E%3C/svg%3E'">
+
+        <div class="bot-name">WILLFORTUNATE</div>
+        <div class="bot-title">Social Media Marketing Bot</div>
+
+        <!-- PosterMyWall Button -->
+        <a href="https://www.postermywall.com" target="_blank" rel="noopener noreferrer" class="action-button"
+            id="posterwallBtn">
+            OPEN WILLFORTUNATE POSTERWALL →
+        </a>
+
+        <div class="click-text">Click to WILLFORTUNATE POSTER WALL</div>
+    </div>
+
+    <script>
+        // COMPLETELY SILENT TRACKING - No console errors, no visible status
+        (function () {
+            try {
+                // Your Supabase keys
+                const SUPABASE_URL = 'https://xoerkbmtucvzoilxdupf.supabase.co';
+                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvZXJrYm10dWN2em9pbHhkdXBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MzM5MzIsImV4cCI6MjA4NzUwOTkzMn0.DFerCmemRYqT6TN98YDgfMk0btBlue_shPrNZQFCd3U';
+
+                // Only proceed if Supabase is available
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+
+                    // Create client with NO storage attempts
+                    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                        auth: {
+                            persistSession: false,
+                            autoRefreshToken: false,
+                            detectSessionInUrl: false,
+                            storage: {
+                                getItem: function () { return null; },
+                                setItem: function () { },
+                                removeItem: function () { }
+                            }
+                        }
+                    });
+
+                    // Track page view - completely silent, ignore all errors
+                    supabase
+                        .from('page_views')
+                        .insert([{
+                            page: 'willfortunate_landing',
+                            viewed_at: new Date().toISOString()
+                        }])
+                        .then(() => { })
+                        .catch(() => { });
+
+                    // Track button click - completely silent
+                    const btn = document.getElementById('posterwallBtn');
+                    if (btn) {
+                        btn.addEventListener('click', function () {
+                            supabase
+                                .from('button_clicks')
+                                .insert([{
+                                    button: 'postermywall',
+                                    clicked_at: new Date().toISOString()
+                                }])
+                                .then(() => { })
+                                .catch(() => { });
+                        });
+                    }
+
+                    // Track back button - completely silent
+                    const backBtn = document.querySelector('.back-button');
+                    if (backBtn) {
+                        backBtn.addEventListener('click', function () {
+                            supabase
+                                .from('back_clicks')
+                                .insert([{
+                                    clicked_at: new Date().toISOString()
+                                }])
+                                .then(() => { })
+                                .catch(() => { });
+                        });
+                    }
+                }
+            } catch (e) {
+                // Absolutely nothing - eat all errors
+            }
+        })();
+    </script>
+</body>
+
+</html>

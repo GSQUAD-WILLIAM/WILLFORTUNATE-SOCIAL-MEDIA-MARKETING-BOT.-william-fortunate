@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>⚡WILLFORTUNATE FOR YOU ALWAYS</title>
+    <style>
+        /* ---------- EXTREME SPEED · CRITICAL CSS ONLY ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            max-width: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #030b1a;
+            color: #f0f4ff;
+            padding: 8px;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .compact-container {
+            max-width: 100%;
+            margin: 0 auto;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* top bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .back-button {
+            background: rgba(0, 30, 60, 0.9);
+            border: 1px solid #00c3ff;
+            border-radius: 40px;
+            padding: 8px 12px 8px 8px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #b0f0ff;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px #00a6ff;
+            white-space: nowrap;
+            font-weight: 500;
+            min-height: 44px;
+        }
+
+        .compact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background: rgba(0, 15, 35, 0.9);
+            border-radius: 40px;
+            backdrop-filter: blur(8px);
+            border: 1px solid #00b4ff;
+            box-shadow: 0 0 20px #0077ff;
+            flex: 1 1 auto;
+            min-width: 200px;
+            min-height: 44px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .logo h1 {
+            font-size: 0.95rem;
+            background: linear-gradient(135deg, #fff, #9dd8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            white-space: nowrap;
+        }
+
+        .stats,
+        .speed-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            background: rgba(0, 120, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 30px;
+            border: 1px solid #00ccff;
+            white-space: nowrap;
+        }
+
+        .speed-indicator {
+            background: rgba(0, 80, 200, 0.3);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #4df0ff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00ffff;
+            animation: pulse-ai 1.2s infinite;
+        }
+
+        @keyframes pulse-ai {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.3);
+            }
+        }
+
+        .search-section {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .compact-search {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .compact-search input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 10, 25, 0.9);
+            border: 1px solid #00b4ff;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 0.9rem;
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-appearance: none;
+            min-height: 44px;
+        }
+
+        .compact-search input::placeholder {
+            color: rgba(100, 200, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .view-toggle {
+            background: rgba(0, 20, 40, 0.9);
+            border: 1px solid #00a6ff;
+            border-radius: 40px;
+            padding: 4px 8px;
+            display: flex;
+            gap: 4px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px #0077ff;
+            flex-shrink: 0;
+        }
+
+        .view-btn {
+            background: transparent;
+            border: none;
+            color: #8ab3ff;
+            padding: 8px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            min-width: 36px;
+            text-align: center;
+        }
+
+        .view-btn.active {
+            background: #0077ff;
+            color: white;
+            box-shadow: 0 0 15px #00b4ff;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 6px 0 14px 0;
+            margin-bottom: 4px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            padding: 8px 16px;
+            background: rgba(0, 15, 30, 0.9);
+            border: 1px solid #0099ff;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            color: #cce4ff;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px #0055bb;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-tab.active {
+            background: #0088ff;
+            color: #fff;
+            border-color: #aae0ff;
+            box-shadow: 0 0 20px #00a6ff;
+        }
+
+        .featured-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0 16px 0;
+            margin-bottom: 10px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        .featured-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .featured-micro {
+            min-width: 80px;
+            max-width: 90px;
+            background: rgba(0, 30, 55, 0.8);
+            border: 1px solid #00a6ff;
+            border-radius: 24px;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px #004c99;
+        }
+
+        .featured-micro .micro-icon {
+            font-size: 1.6rem;
+            margin-bottom: 2px;
+        }
+
+        .featured-micro .micro-name {
+            font-size: 0.55rem;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 2px;
+        }
+
+        .featured-micro .micro-badge {
+            font-size: 0.45rem;
+            padding: 3px 6px;
+            background: rgba(0, 100, 200, 0.4);
+            border-radius: 20px;
+            margin-top: 4px;
+            white-space: nowrap;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid #00b4ff;
+        }
+
+        #categoriesContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 75px;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .category-section {
+            background: rgba(0, 12, 28, 0.8);
+            border-radius: 24px;
+            padding: 14px 12px;
+            backdrop-filter: blur(8px);
+            border: 1px solid #00a6ff;
+            box-shadow: 0 0 30px #004c99;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-section::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 28px;
+            background: conic-gradient(from 0deg, #002266, #004488, #0066aa, #002266);
+            z-index: -1;
+            opacity: 0.2;
+            filter: blur(10px);
+            animation: rotateSlow 14s linear infinite;
+        }
+
+        @keyframes rotateSlow {
+            0% {
+                transform: rotate(0deg);
+                opacity: 0.15;
+            }
+
+            50% {
+                opacity: 0.25;
+            }
+
+            100% {
+                transform: rotate(360deg);
+                opacity: 0.15;
+            }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .section-icon {
+            font-size: 1.2rem;
+            background: rgba(0, 50, 100, 0.6);
+            padding: 6px;
+            border-radius: 14px;
+            box-shadow: 0 0 15px #0099ff;
+            border: 1px solid #00b4ff;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #aad8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-count {
+            font-size: 0.6rem;
+            padding: 4px 10px;
+            background: rgba(0, 80, 150, 0.5);
+            border-radius: 40px;
+            border: 1px solid #00b4ff;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .mini-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 8px;
+            width: 100%;
+        }
+
+        .micro-card {
+            background: rgba(0, 20, 45, 0.9);
+            border: 1px solid #0088ff;
+            border-radius: 20px;
+            padding: 10px 4px 6px 4px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 15px #003377;
+            min-height: 85px;
+            transition: 0.1s;
+            width: 100%;
+        }
+
+        .micro-card:active {
+            background: rgba(0, 70, 130, 0.9);
+            border-color: #aae0ff;
+            transform: scale(0.98);
+        }
+
+        .micro-icon {
+            font-size: 1.5rem;
+            margin-bottom: 3px;
+            filter: drop-shadow(0 0 8px #00b4ff);
+        }
+
+        .micro-name {
+            font-size: 0.55rem;
+            font-weight: 600;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #e0f0ff;
+            padding: 0 2px;
+            width: 100%;
+        }
+
+        .micro-badge {
+            font-size: 0.45rem;
+            padding: 3px 6px;
+            background: rgba(0, 100, 200, 0.4);
+            border-radius: 20px;
+            color: #b0f0ff;
+            margin-top: 4px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border: 1px solid #00b4ff;
+        }
+
+        .compact-quick {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            z-index: 1000;
+        }
+
+        .quick-toggle {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(145deg, #0066cc, #0099ff);
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 0 25px #0088ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .quick-toggle:active {
+            transform: scale(0.92);
+        }
+
+        .quick-menu {
+            position: absolute;
+            bottom: 64px;
+            right: 0;
+            width: 280px;
+            max-width: calc(100vw - 24px);
+            max-height: 70vh;
+            overflow-y: auto;
+            background: rgba(0, 10, 25, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid #00aaff;
+            border-radius: 24px;
+            padding: 14px;
+            display: none;
+            box-shadow: 0 20px 40px #000;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .quick-menu.show {
+            display: block;
+        }
+
+        .quick-category-title {
+            font-size: 0.7rem;
+            color: #9ad0ff;
+            margin-bottom: 8px;
+            font-weight: 700;
+            padding-left: 4px;
+        }
+
+        .quick-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+
+        .quick-item {
+            padding: 8px 6px;
+            background: rgba(0, 30, 55, 0.9);
+            border: 1px solid #0088ff;
+            border-radius: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.65rem;
+            min-height: 44px;
+        }
+
+        .quick-item:active {
+            background: #004488;
+        }
+
+        .quick-item span:first-child {
+            font-size: 1.1rem;
+        }
+
+        img,
+        svg,
+        video,
+        canvas,
+        audio,
+        iframe,
+        embed,
+        object {
+            max-width: 100%;
+        }
+
+        button,
+        .category-tab,
+        .micro-card,
+        .featured-micro,
+        .quick-item,
+        .back-button {
+            touch-action: manipulation;
+        }
+
+        input,
+        button {
+            border-radius: 0;
+            -webkit-appearance: none;
+        }
+
+        @media (max-width: 360px) {
+            .logo h1 {
+                font-size: 0.8rem;
+            }
+
+            .stats,
+            .speed-indicator {
+                font-size: 0.55rem;
+                padding: 4px 6px;
+            }
+
+            .mini-grid {
+                grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            }
+
+            .back-button {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-height: 600px) {
+            #categoriesContainer {
+                margin-bottom: 65px;
+            }
+
+            .quick-menu {
+                max-height: 60vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="compact-container">
+        <div class="top-bar">
+            <div class="back-button" id="backBtn"><span>←</span> <span>EXIT</span></div>
+            <div class="compact-header">
+                <div class="logo"><span style="font-size:1.3rem;">⚡</span>
+                    <h1>WILLFORTUNATE BLUE. INSTANT</h1>
+                </div>
+                <div style="display:flex;gap:4px;">
+                    <div class="stats"><span>∞</span><span>⚡</span></div>
+                    <div class="speed-indicator"><span class="pulse-dot"></span><span>0ns</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="search-section">
+            <div class="compact-search"><input type="text" id="searchInput" placeholder="🔍 Search AI tools..."></div>
+            <div class="view-toggle"><span class="view-btn active">⚡</span><span class="view-btn">⊞</span></div>
+        </div>
+        <div class="category-tabs" id="categoryTabs"></div>
+        <div class="featured-row" id="featuredRow"></div>
+        <div id="categoriesContainer"></div>
+        <div class="compact-quick">
+            <button class="quick-toggle" id="quickToggle">⚡</button>
+            <div class="quick-menu" id="quickMenu">
+                <div id="quickMenuContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---------- ULTRA HIGH SPEED · BEYOND IMAGINATION ----------
+        (function () {
+            // Data as constant (minified for speed)
+            const T = Object.freeze([
+                { n: 'Vecteezy BG', i: '🎨', u: 'https://www.vecteezy.com/edit/remove-background', c: 'Image', s: 'BG Remove', f: 1 },
+                { n: 'Fitroom', i: '🏠', u: 'https://fitroom.ai', c: 'Image', s: 'Interior', f: 0 },
+                { n: 'Light X', i: '💡', u: 'https://lightx.ai', c: 'Image', s: 'Enhance', f: 0 },
+                { n: 'Deep AI', i: '🧠', u: 'https://deepai.org', c: 'Image', s: 'Generator', f: 1 },
+                { n: 'Midjourney', i: '🎨', u: 'https://www.midjourney.com', c: 'Image', s: 'AI Art', f: 1 },
+                { n: 'DALL-E 3', i: '🖼️', u: 'https://openai.com/dall-e-3', c: 'Image', s: 'Text2Img', f: 1 },
+                { n: 'Stable Diff', i: '🌌', u: 'https://stability.ai', c: 'Image', s: 'Generator', f: 0 },
+                { n: 'Leonardo', i: '🎭', u: 'https://leonardo.ai', c: 'Image', s: 'AI Art', f: 1 },
+                { n: 'Canva AI', i: '✏️', u: 'https://www.canva.com/ai-image-generator', c: 'Image', s: 'Design', f: 1 },
+                { n: 'Firefly', i: '🔥', u: 'https://firefly.adobe.com', c: 'Image', s: 'Adobe AI', f: 0 },
+                { n: 'Remove.bg', i: '✂️', u: 'https://www.remove.bg', c: 'Image', s: 'BG Remove', f: 1 },
+                { n: 'Clipdrop', i: '📸', u: 'https://clipdrop.co', c: 'Image', s: 'Photo', f: 0 },
+                { n: 'Runway', i: '🎥', u: 'https://runwayml.com', c: 'Image', s: 'Video/Img', f: 0 },
+                { n: 'Picsart', i: '🎨', u: 'https://picsart.com/ai', c: 'Image', s: 'Editor', f: 0 },
+                { n: 'Fotor', i: '📷', u: 'https://www.fotor.com', c: 'Image', s: 'Photo', f: 0 },
+                { n: 'FlexClip', i: '🎬', u: 'https://www.flexclip.com', c: 'Video', s: 'Editor', f: 1 },
+                { n: 'Pika', i: '🎞️', u: 'https://pika.art', c: 'Video', s: 'Text2Video', f: 1 },
+                { n: 'Synthesia', i: '👤', u: 'https://www.synthesia.io', c: 'Video', s: 'Avatars', f: 0 },
+                { n: 'HeyGen', i: '🎭', u: 'https://www.heygen.com', c: 'Video', s: 'Avatar', f: 1 },
+                { n: 'CapCut', i: '✂️', u: 'https://www.capcut.com', c: 'Video', s: 'Mobile', f: 1 },
+                { n: 'Descript', i: '🎙️', u: 'https://www.descript.com', c: 'Video', s: 'Audio/Video', f: 0 },
+                { n: 'InVideo', i: '📹', u: 'https://invideo.io', c: 'Video', s: 'Templates', f: 0 },
+                { n: 'Pictory', i: '🎥', u: 'https://pictory.ai', c: 'Video', s: 'Long2Short', f: 0 },
+                { n: 'VEED', i: '🎬', u: 'https://www.veed.io', c: 'Video', s: 'Online', f: 0 },
+                { n: 'Clipchamp', i: '🎞️', u: 'https://clipchamp.com', c: 'Video', s: 'MS Editor', f: 0 },
+                { n: 'Wave.video', i: '🌊', u: 'https://wave.video', c: 'Video', s: 'Social', f: 0 },
+                { n: 'Lumen5', i: '🎥', u: 'https://lumen5.com', c: 'Video', s: 'Text2Video', f: 0 },
+                { n: 'Gemini', i: '🔮', u: 'https://gemini.google.com', c: 'Chat', s: 'Google', f: 1 },
+                { n: 'DeepSeek', i: '🔍', u: 'https://chat.deepseek.com', c: 'Chat', s: 'Research', f: 1 },
+                { n: 'ChatGPT', i: '🤖', u: 'https://chat.openai.com', c: 'Chat', s: 'OpenAI', f: 1 },
+                { n: 'Claude', i: '🧠', u: 'https://claude.ai', c: 'Chat', s: 'Anthropic', f: 1 },
+                { n: 'Perplexity', i: '🌐', u: 'https://www.perplexity.ai', c: 'Chat', s: 'Search', f: 0 },
+                { n: 'Copilot', i: '💻', u: 'https://copilot.microsoft.com', c: 'Chat', s: 'Microsoft', f: 0 },
+                { n: 'Character', i: '👥', u: 'https://character.ai', c: 'Chat', s: 'Chatbots', f: 0 },
+                { n: 'Pi', i: '💭', u: 'https://pi.ai', c: 'Chat', s: 'Personal', f: 0 },
+                { n: 'Poe', i: '📱', u: 'https://poe.com', c: 'Chat', s: 'Multi', f: 0 },
+                { n: 'You.com', i: '🔎', u: 'https://you.com', c: 'Chat', s: 'Search', f: 0 },
+                { n: 'Suno', i: '🎵', u: 'https://www.suno.ai', c: 'Audio', s: 'Music', f: 1 },
+                { n: 'ElevenLabs', i: '🗣️', u: 'https://elevenlabs.io', c: 'Audio', s: 'Voice', f: 1 },
+                { n: 'Mubert', i: '🎧', u: 'https://mubert.com', c: 'Audio', s: 'Music', f: 0 },
+                { n: 'Soundraw', i: '🎼', u: 'https://soundraw.io', c: 'Audio', s: 'Royalty', f: 0 },
+                { n: 'AIVA', i: '🎹', u: 'https://www.aiva.ai', c: 'Audio', s: 'Compose', f: 0 },
+                { n: 'Boomy', i: '🎤', u: 'https://boomy.com', c: 'Audio', s: 'Music', f: 0 },
+                { n: 'Resemble', i: '🔊', u: 'https://www.resemble.ai', c: 'Audio', s: 'Voice', f: 0 },
+                { n: 'Murf', i: '🎙️', u: 'https://murf.ai', c: 'Audio', s: 'Voice Over', f: 0 },
+                { n: 'Notion AI', i: '📝', u: 'https://www.notion.so/product/ai', c: 'Write', s: 'Productivity', f: 1 },
+                { n: 'Grammarly', i: '📝', u: 'https://www.grammarly.com', c: 'Write', s: 'Grammar', f: 1 },
+                { n: 'Jasper', i: '✍️', u: 'https://www.jasper.ai', c: 'Write', s: 'Content', f: 0 },
+                { n: 'Copy.ai', i: '📄', u: 'https://www.copy.ai', c: 'Write', s: 'Copy', f: 0 },
+                { n: 'Rytr', i: '✏️', u: 'https://rytr.me', c: 'Write', s: 'Writer', f: 0 }
+            ]);
+
+            // Precomputed category order
+            const CAT_ORDER = ['Image', 'Video', 'Chat', 'Audio', 'Write'];
+
+            // Group tools by category (single loop)
+            const G = { Image: [], Video: [], Chat: [], Audio: [], Write: [] };
+            for (let i = 0; i < T.length; i++) {
+                const t = T[i];
+                G[t.c].push(t);
+            }
+
+            // Icon map
+            const ICON_MAP = { Image: '🖼️', Video: '🎬', Chat: '💬', Audio: '🎵', Write: '✍️' };
+
+            // Build all HTML as strings (single pass)
+            let tabsHtml = '<span class="category-tab active" data-cat="all">ALL</span>';
+            for (let i = 0; i < CAT_ORDER.length; i++) {
+                const cat = CAT_ORDER[i];
+                tabsHtml += `<span class="category-tab" data-cat="${cat}">${cat}</span>`;
+            }
+            document.getElementById('categoryTabs').innerHTML = tabsHtml;
+
+            // Featured row (first 10 featured)
+            const featured = [];
+            for (let i = 0, j = 0; i < T.length && j < 10; i++) {
+                if (T[i].f) { featured.push(T[i]); j++; }
+            }
+            let featuredHtml = '';
+            for (let i = 0; i < featured.length; i++) {
+                const t = featured[i];
+                featuredHtml += `<div class="featured-micro" data-url="${t.u}"><div class="micro-icon">${t.i}</div><div class="micro-name">${t.n}</div><div class="micro-badge">${t.s}</div></div>`;
+            }
+            document.getElementById('featuredRow').innerHTML = featuredHtml;
+
+            // Categories container
+            let catsHtml = '';
+            for (let c = 0; c < CAT_ORDER.length; c++) {
+                const cat = CAT_ORDER[c];
+                const tools = G[cat];
+                if (!tools || !tools.length) continue;
+                catsHtml += `<div class="category-section" data-category="${cat}"><div class="section-header"><span class="section-icon">${ICON_MAP[cat] || '🔧'}</span><span class="section-title">${cat}</span><span class="section-count">${tools.length}</span></div><div class="mini-grid">`;
+                for (let i = 0; i < tools.length; i++) {
+                    const t = tools[i];
+                    catsHtml += `<div class="micro-card" data-url="${t.u}"><div class="micro-icon">${t.i}</div><div class="micro-name">${t.n}</div><div class="micro-badge">${t.s}</div></div>`;
+                }
+                catsHtml += `</div></div>`;
+            }
+            document.getElementById('categoriesContainer').innerHTML = catsHtml;
+
+            // Quick menu
+            let quickHtml = '';
+            for (let c = 0; c < CAT_ORDER.length; c++) {
+                const cat = CAT_ORDER[c];
+                const tools = G[cat];
+                if (!tools || !tools.length) continue;
+                quickHtml += `<div class="quick-category"><div class="quick-category-title">${cat}</div><div class="quick-items">`;
+                const sliceEnd = tools.length > 4 ? 4 : tools.length;
+                for (let i = 0; i < sliceEnd; i++) {
+                    const t = tools[i];
+                    quickHtml += `<div class="quick-item" data-url="${t.u}"><span>${t.i}</span><span>${t.n}</span></div>`;
+                }
+                quickHtml += `</div></div>`;
+            }
+            document.getElementById('quickMenuContent').innerHTML = quickHtml;
+
+            // ---------- INSTANT BACK BUTTON (EXIT BROWSER) ----------
+            const backBtn = document.getElementById('backBtn');
+            backBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // Attempt to close the tab/window
+                window.close();
+                // Fallback for browsers that block window.close()
+                window.location.href = 'about:blank';
+            });
+
+            // ---------- SINGLE EVENT DELEGATE (max speed) ----------
+            const quickMenuEl = document.getElementById('quickMenu');
+            const quickToggleEl = document.getElementById('quickToggle');
+
+            document.addEventListener('click', function (e) {
+                let target = e.target.closest('[data-url], .category-tab, .quick-toggle');
+                if (!target) return;
+
+                // Quick toggle
+                if (target.classList.contains('quick-toggle') || target.id === 'quickToggle') {
+                    e.preventDefault();
+                    quickMenuEl.classList.toggle('show');
+                    return;
+                }
+
+                // Category filter
+                if (target.classList.contains('category-tab')) {
+                    e.preventDefault();
+                    const cat = target.dataset.cat;
+                    // update active class
+                    const tabs = document.querySelectorAll('.category-tab');
+                    for (let i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+                    target.classList.add('active');
+
+                    const sections = document.querySelectorAll('.category-section');
+                    if (cat === 'all') {
+                        for (let i = 0; i < sections.length; i++) sections[i].style.display = 'block';
+                    } else {
+                        for (let i = 0; i < sections.length; i++) {
+                            sections[i].style.display = sections[i].dataset.category === cat ? 'block' : 'none';
+                        }
+                    }
+                    return;
+                }
+
+                // URL open (featured, micro, quick)
+                if (target.dataset.url) {
+                    e.preventDefault();
+                    window.open(target.dataset.url, '_blank');
+                }
+            });
+
+            // Search (fast enough, single loop)
+            document.getElementById('searchInput').addEventListener('input', function (e) {
+                const term = this.value.toLowerCase();
+                const cards = document.querySelectorAll('.micro-card');
+                for (let i = 0; i < cards.length; i++) {
+                    const card = cards[i];
+                    const name = card.querySelector('.micro-name')?.textContent.toLowerCase() || '';
+                    const badge = card.querySelector('.micro-badge')?.textContent.toLowerCase() || '';
+                    card.style.display = (name.includes(term) || badge.includes(term)) ? 'flex' : 'none';
+                }
+            });
+
+            // Outside click to close quick menu
+            document.addEventListener('click', function (e) {
+                if (!quickMenuEl || !quickToggleEl) return;
+                if (!quickToggleEl.contains(e.target) && !quickMenuEl.contains(e.target)) {
+                    quickMenuEl.classList.remove('show');
+                }
+            });
+
+            // Ensure first tab active
+            document.querySelector('.category-tab')?.classList.add('active');
+        })();
+    </script>
+</body>
+
+</html>

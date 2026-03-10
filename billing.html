@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Willfortunate Social Bot - Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: rgba(0, 0, 0, 0.5);
+            min-height: 100vh;
+            padding: 10px;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            overflow-x: hidden;
+        }
+
+        .modal-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: #fff0f5;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease;
+            position: relative;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #e6f0ff 0%, #b8d4ff 100%);
+            padding: 10px 14px;
+            border-radius: 40px;
+            margin-bottom: 16px;
+            border: 2px solid #1e4b8f;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .username {
+            font-weight: 700;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+            color: #0a2647;
+        }
+
+        .plan-info {
+            font-size: 11px;
+            color: #1e4b8f;
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .currency-info {
+            font-size: 10px;
+            color: #b13e66;
+            margin-top: 2px;
+            font-weight: 700;
+        }
+
+        .plans-section {
+            background: #ffe4ec;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 14px;
+            border: 2px solid #d84c7a;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 11px;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        .plan-card {
+            background: linear-gradient(135deg, #e6f0ff 0%, #cce0ff 100%);
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid #1e4b8f;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card.popular {
+            border-color: #b13e66;
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff99aa 100%);
+        }
+
+        .plan-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #b13e66;
+            color: #ffffff;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .plan-name {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #0a2647;
+            padding-right: 60px;
+        }
+
+        .plan-price {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 2px;
+            line-height: 1;
+            color: #0a2647;
+        }
+
+        .plan-price span {
+            font-size: 10px;
+            font-weight: 700;
+            opacity: 0.9;
+            color: #1e4b8f;
+        }
+
+        .plan-currency {
+            font-size: 10px;
+            color: #1e4b8f;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+
+        .plan-features li {
+            padding: 4px 0;
+            border-bottom: 1px solid #1e4b8f;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .plan-card.popular .plan-features li {
+            border-bottom: 1px solid #b13e66;
+        }
+
+        .check-icon {
+            color: #1e4b8f;
+            font-size: 12px;
+            flex-shrink: 0;
+            font-weight: 900;
+        }
+
+        .plan-button {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            color: white;
+            margin-top: auto;
+        }
+
+        .plan-card.popular .plan-button {
+            background: #b13e66;
+            color: #ffffff;
+        }
+
+        .contact-section {
+            background: #ffe4ec;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 14px;
+            border: 2px solid #d84c7a;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .contact-item {
+            background: #fff0f5;
+            border-radius: 12px;
+            padding: 10px;
+            border: 2px solid #d84c7a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #000000;
+        }
+
+        .contact-icon {
+            font-size: 20px;
+        }
+
+        .contact-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .contact-number {
+            font-size: 12px;
+            font-weight: 800;
+            color: #1e4b8f;
+        }
+
+        .email-item {
+            grid-column: span 2;
+            background: #fff0f5;
+            border-radius: 12px;
+            padding: 10px;
+            border: 2px solid #d84c7a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #000000;
+            font-size: 12px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .payment-methods-section {
+            background: #ffe4ec;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #d84c7a;
+            margin-bottom: 14px;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .payment-method {
+            background: #fff0f5;
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid #d84c7a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method.active {
+            border-color: #b13e66;
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff99aa 100%);
+            position: relative;
+        }
+
+        .payment-method.active::after {
+            content: '✓';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #b13e66;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .payment-icon {
+            font-size: 22px;
+        }
+
+        .payment-name {
+            font-size: 11px;
+            font-weight: 800;
+            text-align: center;
+            color: #000000;
+        }
+
+        .paybill-info {
+            background: #ffd9e6;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 14px;
+            border-left: 4px solid #b13e66;
+        }
+
+        .paybill-info h4 {
+            color: #000000;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .paybill-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .paybill-item {
+            background: #fff0f5;
+            padding: 6px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #d84c7a;
+        }
+
+        .paybill-label {
+            font-size: 9px;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .paybill-value {
+            font-size: 14px;
+            font-weight: 900;
+            color: #000000;
+        }
+
+        .payment-form {
+            background: #ffe4ec;
+            border-radius: 12px;
+            padding: 14px;
+            border: 2px solid #d84c7a;
+        }
+
+        .bot-feature {
+            background: linear-gradient(135deg, #e6f0ff 0%, #cce0ff 100%);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 14px;
+            font-size: 11px;
+            border-left: 4px solid #1e4b8f;
+            color: #000000;
+            font-weight: 600;
+            border: 1px solid #1e4b8f;
+            word-break: break-word;
+        }
+
+        .code-input-section {
+            background: #ffd9e6;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 14px;
+            border: 2px solid #b13e66;
+        }
+
+        .code-input-section h4 {
+            color: #000000;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .code-input-group {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .code-input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #d84c7a;
+            border-radius: 6px;
+            font-size: 13px;
+            background: #fff0f5;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .verify-code-btn {
+            padding: 10px 16px;
+            background: #1e4b8f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .user-details-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .user-details-input input {
+            padding: 8px;
+            border: 2px solid #d84c7a;
+            border-radius: 6px;
+            font-size: 11px;
+            background: #fff0f5;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .code-verified-badge {
+            background: #48bb78;
+            color: white;
+            padding: 6px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            display: none;
+        }
+
+        .code-verified-badge.show {
+            display: block;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pay-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .payment-details {
+            display: none;
+        }
+
+        .payment-details.active {
+            display: block;
+        }
+
+        .success-message,
+        .processing-message,
+        .error-banner {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            font-size: 11px;
+            display: none;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .success-message.show,
+        .processing-message.show,
+        .error-banner.show {
+            display: block;
+        }
+
+        .app-launch-container {
+            text-align: center;
+            padding: 14px;
+            background: #ffd9e6;
+            border-radius: 10px;
+            margin-top: 14px;
+            border: 2px solid #d84c7a;
+            display: none;
+        }
+
+        .app-launch-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #000000;
+            margin-bottom: 6px;
+        }
+
+        .app-launch-instructions {
+            font-size: 11px;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .app-launch-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .payment-completion-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .completion-button {
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .completion-button.success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .completion-button.success:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .completion-button.failed {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .payment-status-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .payment-status-modal.active {
+            display: flex;
+        }
+
+        .status-modal-content {
+            background: #fff0f5;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 340px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 2px solid #d84c7a;
+        }
+
+        .status-modal-header {
+            padding: 20px 16px;
+        }
+
+        .status-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        .status-modal-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #000000;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+
+        .status-modal-subtitle {
+            font-size: 12px;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+            line-height: 1.4;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .payment-details-modal {
+            background: #ffe4ec;
+            padding: 14px;
+            border-radius: 10px;
+            margin: 0 16px 16px;
+            border: 1px solid #d84c7a;
+        }
+
+        .payment-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #d84c7a;
+            font-size: 11px;
+            gap: 10px;
+        }
+
+        .payment-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .payment-detail-label {
+            color: #1a1a1a;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .payment-detail-value {
+            color: #000000;
+            font-weight: 800;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .status-modal-actions {
+            display: flex;
+            gap: 8px;
+            padding: 0 16px 16px;
+        }
+
+        .status-modal-button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+        }
+
+        .status-modal-button.primary {
+            background: linear-gradient(135deg, #1e4b8f 0%, #2a6bb0 100%);
+            color: white;
+        }
+
+        .status-modal-button.secondary {
+            background: #d84c7a;
+            color: #ffffff;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #1e4b8f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .dashboard-footer {
+            text-align: center;
+            padding: 14px;
+            font-size: 10px;
+            color: #000000;
+            border-top: 2px solid #d84c7a;
+            background: #ffd9e6;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .admin-panel.active {
+            display: flex;
+        }
+
+        .admin-content {
+            background: #fff0f5;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 3px solid #d84c7a;
+            padding: 16px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #d84c7a;
+        }
+
+        .admin-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #000000;
+        }
+
+        .admin-close {
+            background: #d84c7a;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+        }
+
+        .codes-list {
+            margin-top: 16px;
+        }
+
+        .code-item {
+            background: #ffe4ec;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #d84c7a;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 11px;
+        }
+
+        .code-value {
+            font-weight: 800;
+            color: #1e4b8f;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .code-status {
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 10px;
+            background: #48bb78;
+            color: white;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .code-status.used {
+            background: #e53e3e;
+        }
+
+        .admin-password-prompt {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3500;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .admin-password-prompt.active {
+            display: flex;
+        }
+
+        .password-content {
+            background: #fff0f5;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 300px;
+            padding: 20px;
+            border: 3px solid #d84c7a;
+        }
+
+        .password-content h3 {
+            color: #000000;
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 14px;
+        }
+
+        .password-content input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d84c7a;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            background: #fff0f5;
+        }
+
+        .password-content button {
+            width: 100%;
+            padding: 10px;
+            background: #1e4b8f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        @media (max-width: 400px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .email-item {
+                grid-column: span 1;
+            }
+
+            .user-details-input {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-completion-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .status-modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal-container">
+        <div class="modal-header">
+            <span class="modal-title">Willfortunate Social Bot</span>
+            <button class="modal-close" id="closeBrowserBtn" aria-label="Exit">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path d="M10 9V5l7 7-7 7v-4H4V9h6z M18 5v14h-2V5h2z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="modal-content">
+            <div class="user-profile">
+                <div class="avatar">W</div>
+                <div class="user-details">
+                    <div class="username">@willfortunate</div>
+                    <div class="plan-info" id="userPlanDisplay">Basic Plan</div>
+                    <div class="currency-info" id="userCurrencyDisplay">$9 / KSh 1,080</div>
+                </div>
+            </div>
+
+            <section class="plans-section">
+                <div class="section-title">Bot Subscription Plans</div>
+                <div class="section-subtitle">Choose the perfect automation plan</div>
+
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <div class="plan-name">Basic Bot</div>
+                        <div class="plan-price">$9<span>/month</span></div>
+                        <div class="plan-currency">KSh 1,080 / month</div>
+                        <ul class="plan-features">
+                            <li><span class="check-icon">✓</span> 5 Social Platforms</li>
+                            <li><span class="check-icon">✓</span> 1,500 posts/month</li>
+                            <li><span class="check-icon">✓</span> Basic Analytics</li>
+                            <li><span class="check-icon">✓</span> Email support</li>
+                            <li><span class="check-icon">✓</span> Basic AI Support</li>
+                        </ul>
+                        <button class="plan-button" data-plan="basic" data-price="9" data-ksh="1080">Select
+                            Basic</button>
+                    </div>
+
+                    <div class="plan-card popular">
+                        <div class="plan-name">Pro Bot</div>
+                        <div class="plan-price">$29<span>/month</span></div>
+                        <div class="plan-currency">KSh 3,480 / month</div>
+                        <ul class="plan-features">
+                            <li><span class="check-icon">✓</span> 5 Social Platforms</li>
+                            <li><span class="check-icon">✓</span> Unlimited posts/month</li>
+                            <li><span class="check-icon">✓</span> Advanced Analytics</li>
+                            <li><span class="check-icon">✓</span> Priority support</li>
+                            <li><span class="check-icon">✓</span> Full AI Automation</li>
+                        </ul>
+                        <button class="plan-button" data-plan="pro" data-price="29" data-ksh="3480">Select Pro</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="contact-section">
+                <div class="section-title">Contact Support</div>
+                <div class="section-subtitle">Reach us directly</div>
+
+                <div class="contact-grid">
+                    <a href="tel:0758499656" class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-label">Call Us</div>
+                        <div class="contact-number">0758 499 656</div>
+                    </a>
+
+                    <a href="#" class="contact-item" id="saveContactBtn">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-label">Save Contact</div>
+                        <div class="contact-number">0793 409 842</div>
+                    </a>
+
+                    <a href="mailto:willforthightechnologybots@gmail.com" class="email-item">
+                        <div class="contact-icon">📧</div>
+                        <div>willforthightechnologybots@gmail.com</div>
+                    </a>
+                </div>
+            </section>
+
+            <section class="payment-methods-section">
+                <div class="section-title">Payment Methods</div>
+                <div class="section-subtitle">Secure payment for your bot subscription</div>
+
+                <div class="payment-methods-grid">
+                    <div class="payment-method active" data-method="mpesa">
+                        <div class="payment-icon">📱</div>
+                        <div class="payment-name">M-Pesa</div>
+                    </div>
+                    <div class="payment-method" data-method="airtel">
+                        <div class="payment-icon">📞</div>
+                        <div class="payment-name">Airtel Money</div>
+                    </div>
+                </div>
+
+                <div class="paybill-info">
+                    <h4>📋 Paybill Information</h4>
+                    <div class="paybill-details">
+                        <div class="paybill-item">
+                            <div class="paybill-label">Paybill Number</div>
+                            <div class="paybill-value">247247</div>
+                        </div>
+                        <div class="paybill-item">
+                            <div class="paybill-label">Account Number</div>
+                            <div class="paybill-value">5654546</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-form">
+                    <div class="bot-feature" id="plan-summary">
+                        <span class="bot-icon">🤖</span>
+                        <strong>Selected Plan:</strong> <span id="selected-plan-name">Basic Bot Plan</span> •
+                        <strong>Amount:</strong> <span id="selected-plan-amount">$9.00 (KSh 1,080)</span>
+                    </div>
+
+                    <div class="code-input-section">
+                        <h4>🔐 Enter Payment Code</h4>
+                        <div class="code-input-group">
+                            <input type="text" id="paymentCode" placeholder="Enter code" maxlength="20">
+                            <button class="verify-code-btn" id="verifyCodeBtn">Verify</button>
+                        </div>
+
+                        <div class="user-details-input">
+                            <input type="email" id="userEmail" placeholder="Your email">
+                            <input type="tel" id="userPhone" placeholder="Your phone">
+                            <input type="text" id="userAccount" placeholder="Account (5654546)" value="5654546">
+                        </div>
+
+                        <div class="code-verified-badge" id="codeVerifiedBadge">
+                            ✅ Code verified! You can now complete payment.
+                        </div>
+                    </div>
+
+                    <div class="success-message" id="success-message">
+                        ✅ Payment successful! Your subscription has been activated.
+                    </div>
+
+                    <div class="processing-message" id="processing-message">
+                        ⏳ Processing your payment...
+                    </div>
+
+                    <div class="error-banner" id="error-message">
+                        ❌ Payment failed. Please try again.
+                    </div>
+
+                    <div class="desktop-warning" id="desktop-warning">
+                        ⚠️ This payment method requires a mobile phone with SIM Toolkit. Please complete this payment on
+                        your mobile device.
+                    </div>
+
+                    <div class="app-launch-container" id="app-launch-container">
+                        <div class="app-launch-title" id="app-launch-title">Open SIM Toolkit</div>
+                        <div class="app-launch-instructions" id="app-launch-instructions">
+                            Click the button below to open the SIM Toolkit app.
+                        </div>
+                        <button class="app-launch-button" id="app-launch-button">
+                            Open SIM Toolkit
+                        </button>
+                        <div class="payment-completion-actions">
+                            <button class="completion-button success" id="payment-success-btn" disabled>
+                                ✅ I Completed Payment
+                            </button>
+                            <button class="completion-button failed" id="payment-failed-btn">
+                                ❌ Payment Failed
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="payment-details active" id="mpesa-details">
+                        <button class="pay-button" id="mpesa-pay">
+                            <span class="spinner" style="display:none;"></span>
+                            <span class="button-text">Open SIM Toolkit</span>
+                        </button>
+                    </div>
+
+                    <div class="payment-details" id="airtel-details">
+                        <button class="pay-button" id="airtel-pay">
+                            <span class="spinner" style="display:none;"></span>
+                            <span class="button-text">Open SIM Toolkit</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="dashboard-footer">
+                © 2026 Willfortunate Social Bot • Secure Payments
+            </div>
+        </div>
+    </div>
+
+    <div class="payment-status-modal" id="payment-status-modal">
+        <div class="status-modal-content">
+            <div class="status-modal-header">
+                <div class="status-icon" id="status-icon">✅</div>
+                <div class="status-modal-title" id="status-title">Payment Successful!</div>
+                <div class="status-modal-subtitle" id="status-subtitle">Your payment has been processed successfully
+                </div>
+            </div>
+            <div class="payment-details-modal" id="payment-details-container"></div>
+            <div class="status-modal-actions">
+                <button class="status-modal-button secondary" id="close-status-modal">Close</button>
+                <button class="status-modal-button primary" id="download-receipt">Download Receipt</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-password-prompt" id="adminPasswordPrompt">
+        <div class="password-content">
+            <h3>🔐 Admin Access</h3>
+            <input type="password" id="adminPassword" placeholder="Enter master password">
+            <button id="submitAdminPassword">Access Admin Panel</button>
+        </div>
+    </div>
+
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <span class="admin-title">🔐 Admin Panel - Generated Codes</span>
+                <button class="admin-close" id="closeAdminPanel">×</button>
+            </div>
+            <div class="codes-list" id="codesList">
+                <!-- Codes will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const paymentConfig = {
+            exchangeRate: 120,
+            paymentMethods: {
+                mpesa: {
+                    name: 'M-Pesa',
+                    ussd: '*247#'
+                },
+                airtel: {
+                    name: 'Airtel Money',
+                    ussd: '*211#'
+                }
+            }
+        };
+
+        let currentState = {
+            plan: 'basic',
+            planName: 'Basic Bot Plan',
+            amount: 9,
+            currency: 'USD',
+            localAmount: 1080,
+            localCurrency: 'KSh'
+        };
+
+        let isDesktop = false;
+        let generatedCodes = [];
+        let currentVerifiedCode = null;
+        let codeVerified = false;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            detectDevice();
+            initializePaymentSystem();
+            updatePlanSummary();
+            setupEventListeners();
+            loadCodesFromStorage();
+        });
+
+        function loadCodesFromStorage() {
+            try {
+                const saved = localStorage.getItem('willfortunateCodes');
+                if (saved) {
+                    generatedCodes = JSON.parse(saved);
+                }
+            } catch (e) {
+                generatedCodes = [];
+            }
+        }
+
+        function saveCodesToStorage() {
+            try {
+                localStorage.setItem('willfortunateCodes', JSON.stringify(generatedCodes));
+            } catch (e) { }
+        }
+
+        function detectDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+            isDesktop = !isMobile;
+
+            if (isDesktop) {
+                document.getElementById('desktop-warning').classList.add('show');
+            }
+        }
+
+        function initializePaymentSystem() {
+            setActivePaymentMethod('mpesa');
+        }
+
+        function setActivePaymentMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`.payment-method[data-method="${method}"]`).classList.add('active');
+            document.querySelectorAll('.payment-details').forEach(detail => {
+                detail.classList.remove('active');
+            });
+            document.getElementById(`${method}-details`).classList.add('active');
+            hideAllMessages();
+            document.getElementById('app-launch-container').style.display = 'none';
+        }
+
+        function setupEventListeners() {
+            document.getElementById('closeBrowserBtn').addEventListener('click', function () {
+                window.close();
+            });
+
+            document.getElementById('saveContactBtn').addEventListener('click', function (e) {
+                e.preventDefault();
+                saveContact();
+            });
+
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function () {
+                    const methodType = this.dataset.method;
+                    setActivePaymentMethod(methodType);
+                });
+            });
+
+            document.querySelectorAll('.plan-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    selectPlan(this.dataset.plan, parseFloat(this.dataset.price), parseInt(this.dataset.ksh));
+                });
+            });
+
+            document.getElementById('mpesa-pay').addEventListener('click', function () {
+                if (isDesktop) {
+                    showError('Please use a mobile device to make this payment.');
+                    return;
+                }
+                showProcessing();
+                setTimeout(() => {
+                    hideProcessing();
+                    openSimToolkit('mpesa');
+                }, 500);
+            });
+
+            document.getElementById('airtel-pay').addEventListener('click', function () {
+                if (isDesktop) {
+                    showError('Please use a mobile device to make this payment.');
+                    return;
+                }
+                showProcessing();
+                setTimeout(() => {
+                    hideProcessing();
+                    openSimToolkit('airtel');
+                }, 500);
+            });
+
+            document.getElementById('close-status-modal').addEventListener('click', closeStatusModal);
+            document.getElementById('download-receipt').addEventListener('click', downloadReceipt);
+
+            document.getElementById('app-launch-button').addEventListener('click', function (e) {
+                e.preventDefault();
+                if (isDesktop) {
+                    showError('Please use a mobile device to complete this payment.');
+                    return;
+                }
+                const method = document.querySelector('.payment-method.active').dataset.method;
+                openSimToolkit(method);
+            });
+
+            document.getElementById('payment-success-btn').addEventListener('click', function () {
+                if (!codeVerified) {
+                    showError('Please verify your payment code first');
+                    return;
+                }
+
+                const method = document.querySelector('.payment-method.active').dataset.method;
+                const paymentData = collectPaymentData(method);
+                showPaymentSuccess(method, paymentData);
+            });
+
+            document.getElementById('payment-failed-btn').addEventListener('click', function () {
+                showError('Payment failed. Please try again or contact support.');
+                document.getElementById('app-launch-container').style.display = 'none';
+                codeVerified = false;
+                document.getElementById('payment-success-btn').disabled = true;
+                document.getElementById('codeVerifiedBadge').classList.remove('show');
+            });
+
+            document.getElementById('verifyCodeBtn').addEventListener('click', verifyPaymentCode);
+
+            let keySequence = '';
+            document.addEventListener('keydown', function (e) {
+                if (e.shiftKey && e.ctrlKey && e.key === 'D') {
+                    e.preventDefault();
+                    document.getElementById('adminPasswordPrompt').classList.add('active');
+                }
+            });
+
+            document.getElementById('submitAdminPassword').addEventListener('click', function () {
+                const password = document.getElementById('adminPassword').value;
+                if (password === 'willfortunatemylove') {
+                    document.getElementById('adminPasswordPrompt').classList.remove('active');
+                    openAdminPanel();
+                } else {
+                    alert('Incorrect password');
+                }
+                document.getElementById('adminPassword').value = '';
+            });
+
+            document.getElementById('closeAdminPanel').addEventListener('click', function () {
+                document.getElementById('adminPanel').classList.remove('active');
+            });
+        }
+
+        function saveContact() {
+            const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:Willfortunate Support
+TEL;TYPE=CELL:0793409842
+EMAIL:willforthightechnologybots@gmail.com
+ORG:Willfortunate Social Bot
+END:VCARD`;
+
+            const blob = new Blob([vCard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'willfortunate-support.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showTemporaryNotification('Contact file downloaded. Save to your contacts.');
+        }
+
+        function generateUniqueCode() {
+            const chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+            let randomPart = '';
+            for (let i = 0; i < 8; i++) {
+                randomPart += chars[Math.floor(Math.random() * chars.length)];
+            }
+            const code = `willfor${randomPart}`;
+
+            // Check if code already exists
+            if (generatedCodes.some(c => c.code === code)) {
+                return generateUniqueCode();
+            }
+
+            return code;
+        }
+
+        function sendCodeToEmail(code) {
+            // Create a mailto link to send code to admin email
+            const subject = encodeURIComponent('New Payment Code Generated - Willfortunate Bot');
+            const body = encodeURIComponent(
+                `New payment code has been generated:
+
+Code: ${code}
+Plan: ${currentState.planName}
+Amount: KSh ${currentState.localAmount}
+Date: ${new Date().toLocaleString()}
+
+This code is valid for one-time use only.`
+            );
+
+            // Open default email client
+            window.location.href = `mailto:willforthightechnologybots@gmail.com?subject=${subject}&body=${body}`;
+
+            // Also store in admin panel
+            const codeData = {
+                code: code,
+                generated: new Date().toISOString(),
+                used: false,
+                plan: currentState.planName,
+                amount: currentState.localAmount
+            };
+
+            generatedCodes.push(codeData);
+            saveCodesToStorage();
+        }
+
+        function openSimToolkit(method) {
+            if (isDesktop) {
+                showError('Please use a mobile device to complete this payment.');
+                return;
+            }
+
+            // Generate and send code to email
+            const code = generateUniqueCode();
+            sendCodeToEmail(code);
+
+            // Get the USSD code for the selected method
+            const ussdCode = method === 'mpesa' ? '*247#' : '*211#';
+
+            // Open the SIM Toolkit directly using tel: protocol
+            window.location.href = `tel:${ussdCode}`;
+
+            // Show the app launch container with instructions (without showing the code)
+            showAppLaunch(method);
+        }
+
+        function verifyPaymentCode() {
+            const codeInput = document.getElementById('paymentCode').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const phone = document.getElementById('userPhone').value.trim();
+            const account = document.getElementById('userAccount').value.trim();
+
+            if (!codeInput) {
+                showError('Please enter a payment code');
+                return;
+            }
+
+            if (!email || !phone || !account) {
+                showError('Please fill in all fields');
+                return;
+            }
+
+            if (!email.includes('@') || !email.includes('.')) {
+                showError('Please enter a valid email');
+                return;
+            }
+
+            if (phone.length < 9) {
+                showError('Please enter a valid phone number');
+                return;
+            }
+
+            const codeData = generatedCodes.find(c => c.code === codeInput && !c.used);
+
+            if (codeData) {
+                codeData.used = true;
+                codeData.usedBy = {
+                    email: email,
+                    phone: phone,
+                    account: account,
+                    usedAt: new Date().toISOString()
+                };
+                saveCodesToStorage();
+
+                codeVerified = true;
+                currentVerifiedCode = codeInput;
+                document.getElementById('codeVerifiedBadge').classList.add('show');
+                document.getElementById('payment-success-btn').disabled = false;
+                showTemporaryNotification('Code verified successfully!');
+            } else {
+                showError('Invalid or already used code');
+                codeVerified = false;
+                document.getElementById('payment-success-btn').disabled = true;
+                document.getElementById('codeVerifiedBadge').classList.remove('show');
+            }
+        }
+
+        function selectPlan(planType, price, localAmount) {
+            currentState = {
+                plan: planType,
+                planName: planType === 'basic' ? 'Basic Bot Plan' : 'Pro Bot Plan',
+                amount: price,
+                currency: 'USD',
+                localAmount: localAmount,
+                localCurrency: 'KSh'
+            };
+            document.getElementById('userPlanDisplay').textContent = `${planType.charAt(0).toUpperCase() + planType.slice(1)} Plan`;
+            document.getElementById('userCurrencyDisplay').textContent = `$${price}/KSh ${localAmount.toLocaleString()}`;
+            updatePlanSummary();
+            showTemporaryNotification(`✅ ${currentState.planName} selected!`);
+        }
+
+        function updatePlanSummary() {
+            document.getElementById('plan-summary').innerHTML = `<span class="bot-icon">🤖</span><strong>Selected Plan:</strong> <span id="selected-plan-name">${currentState.planName}</span> • <strong>Amount:</strong> <span id="selected-plan-amount">$${currentState.amount.toFixed(2)} (KSh ${currentState.localAmount.toLocaleString()})</span>`;
+        }
+
+        function collectPaymentData(method) {
+            return {
+                plan: currentState.planName,
+                planType: currentState.plan,
+                amount: currentState.amount,
+                currency: currentState.currency,
+                localAmount: currentState.localAmount,
+                localCurrency: currentState.localCurrency,
+                method: method === 'mpesa' ? 'M-Pesa' : 'Airtel Money',
+                userEmail: document.getElementById('userEmail').value,
+                userPhone: document.getElementById('userPhone').value,
+                userAccount: document.getElementById('userAccount').value,
+                paymentCode: currentVerifiedCode,
+                paybillNumber: '247247',
+                accountNumber: '5654546',
+                timestamp: new Date().toISOString()
+            };
+        }
+
+        function showAppLaunch(method) {
+            const appName = method === 'mpesa' ? 'M-Pesa' : 'Airtel Money';
+            const ussdCode = method === 'mpesa' ? '*247#' : '*211#';
+
+            document.getElementById('app-launch-title').textContent = `Open ${appName} SIM Toolkit`;
+            document.getElementById('app-launch-instructions').innerHTML = `
+                <strong>Instructions:</strong><br>
+                1. SIM Toolkit will open automatically<br>
+                2. Enter Paybill: <strong>247247</strong><br>
+                3. Account: <strong>5654546</strong><br>
+                4. Amount: <strong>KSh ${currentState.localAmount.toLocaleString()}</strong><br>
+                5. Complete payment then click "I Completed Payment"<br>
+                <br>
+                <small>USSD: ${ussdCode} (if SIM Toolkit doesn't open)</small>
+            `;
+
+            document.getElementById('app-launch-container').style.display = 'block';
+            document.getElementById('app-launch-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showPaymentSuccess(method, paymentData) {
+            hideAllMessages();
+            document.getElementById('success-message').classList.add('show');
+            document.getElementById('app-launch-container').style.display = 'none';
+
+            const transactionId = (method === 'mpesa' ? 'MP' : 'AT') + Date.now().toString().slice(-8) + Math.floor(Math.random() * 1000);
+            const finalPaymentData = {
+                ...paymentData,
+                transactionId: transactionId,
+                status: 'completed',
+                date: new Date().toISOString(),
+                receiptNumber: `WFB-${Date.now()}`
+            };
+
+            showPaymentStatusModal('success', finalPaymentData);
+
+            codeVerified = false;
+            document.getElementById('payment-success-btn').disabled = true;
+            document.getElementById('codeVerifiedBadge').classList.remove('show');
+            document.getElementById('paymentCode').value = '';
+        }
+
+        function showProcessing() {
+            const activeButton = document.querySelector('.payment-details.active .pay-button');
+            if (activeButton) {
+                const spinner = activeButton.querySelector('.spinner');
+                const buttonText = activeButton.querySelector('.button-text');
+                spinner.style.display = 'inline-block';
+                buttonText.textContent = 'Opening...';
+                activeButton.disabled = true;
+            }
+            hideAllMessages();
+            document.getElementById('processing-message').classList.add('show');
+        }
+
+        function hideProcessing() {
+            const activeButton = document.querySelector('.payment-details.active .pay-button');
+            if (activeButton) {
+                const spinner = activeButton.querySelector('.spinner');
+                const buttonText = activeButton.querySelector('.button-text');
+                spinner.style.display = 'none';
+                buttonText.textContent = 'Open SIM Toolkit';
+                activeButton.disabled = false;
+            }
+            document.getElementById('processing-message').classList.remove('show');
+        }
+
+        function showError(message) {
+            hideAllMessages();
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = `❌ ${message}`;
+            errorElement.classList.add('show');
+        }
+
+        function hideAllMessages() {
+            document.getElementById('success-message').classList.remove('show');
+            document.getElementById('processing-message').classList.remove('show');
+            document.getElementById('error-message').classList.remove('show');
+        }
+
+        function showPaymentStatusModal(status, paymentData) {
+            const modal = document.getElementById('payment-status-modal');
+            const detailsContainer = document.getElementById('payment-details-container');
+
+            detailsContainer.innerHTML = `
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Transaction:</span>
+                    <span class="payment-detail-value">${paymentData.transactionId}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Plan:</span>
+                    <span class="payment-detail-value">${paymentData.plan}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Amount:</span>
+                    <span class="payment-detail-value">KSh ${paymentData.localAmount.toLocaleString()}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Method:</span>
+                    <span class="payment-detail-value">${paymentData.method}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Email:</span>
+                    <span class="payment-detail-value">${paymentData.userEmail}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Phone:</span>
+                    <span class="payment-detail-value">${paymentData.userPhone}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Code:</span>
+                    <span class="payment-detail-value">${paymentData.paymentCode}</span>
+                </div>
+                <div class="payment-detail-row">
+                    <span class="payment-detail-label">Date:</span>
+                    <span class="payment-detail-value">${new Date().toLocaleDateString()}</span>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function closeStatusModal() {
+            document.getElementById('payment-status-modal').classList.remove('active');
+        }
+
+        function downloadReceipt() {
+            const detailsContainer = document.getElementById('payment-details-container');
+            let receiptText = "WILLFORTUNATE SOCIAL BOT - PAYMENT RECEIPT\n";
+            receiptText += "===========================================\n";
+
+            detailsContainer.querySelectorAll('.payment-detail-row').forEach(row => {
+                const label = row.querySelector('.payment-detail-label').textContent;
+                const value = row.querySelector('.payment-detail-value').textContent;
+                receiptText += `${label}: ${value}\n`;
+            });
+
+            receiptText += "\nThank you for your payment!\n";
+            receiptText += "Your subscription has been activated.";
+
+            const blob = new Blob([receiptText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `willfortunate-receipt-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showTemporaryNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position:fixed;top:20px;right:20px;z-index:10000;background:#48bb78;color:white;padding:12px;border-radius:8px;font-weight:800;font-size:12px;max-width:280px;';
+            notification.textContent = `🤖 ${message}`;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function openAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            const codesList = document.getElementById('codesList');
+
+            if (generatedCodes.length === 0) {
+                codesList.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">No codes generated yet</p>';
+            } else {
+                codesList.innerHTML = generatedCodes.sort((a, b) => new Date(b.generated) - new Date(a.generated)).map(code => `
+                    <div class="code-item">
+                        <div style="flex:1;">
+                            <div class="code-value">${code.code}</div>
+                            <div style="font-size:10px;color:#666;margin-top:4px;">${code.plan} - KSh ${code.amount}</div>
+                            <div style="font-size:9px;color:#999;">${new Date(code.generated).toLocaleString()}</div>
+                            ${code.used ? `
+                                <div style="font-size:9px;color:#e53e3e;margin-top:4px;">
+                                    Used: ${code.usedBy?.email}<br>
+                                    Phone: ${code.usedBy?.phone}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <span class="code-status ${code.used ? 'used' : ''}">${code.used ? 'Used' : 'Active'}</span>
+                    </div>
+                `).join('');
+            }
+
+            panel.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

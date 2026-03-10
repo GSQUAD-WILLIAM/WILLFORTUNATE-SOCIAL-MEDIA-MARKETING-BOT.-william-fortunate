@@ -1,0 +1,8 @@
+wfsmb-backend/
+├── server.js
+├── package.json
+├── .env
+├── database/
+│   └── schema.sql
+└── middleware/
+    └── auth.js

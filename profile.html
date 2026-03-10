@@ -1,0 +1,4494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+    <title>Account Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* YOUR EXISTING CSS - EXACTLY AS YOU HAD IT */
+        :root {
+            --primary-500: #4361ee;
+            --primary-600: #3a56d4;
+            --primary-700: #2f4bc2;
+            --secondary-500: #7209b7;
+            --secondary-600: #5e0896;
+            --accent-500: #4cc9f0;
+            --accent-600: #38b2e8;
+            --success-500: #06d6a0;
+            --success-600: #05c08e;
+            --warning-500: #ff9e00;
+            --warning-600: #e68a00;
+            --danger-500: #f72585;
+            --danger-600: #e11d74;
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+
+            --bg-primary: var(--neutral-50);
+            --bg-secondary: white;
+            --bg-tertiary: var(--neutral-100);
+            --text-primary: var(--neutral-900);
+            --text-secondary: var(--neutral-700);
+            --text-tertiary: var(--neutral-600);
+            --border-color: var(--neutral-200);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition-fast: 100ms ease;
+            --transition-base: 150ms ease;
+            --transition-slow: 200ms ease;
+            --safe-area-inset-top: env(safe-area-inset-top, 0px);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+
+            --font-size-small: 12px;
+            --font-size-medium: 14px;
+            --font-size-large: 16px;
+            --font-scale-factor: 1;
+        }
+
+        .theme-dark {
+            --bg-primary: var(--neutral-900);
+            --bg-secondary: var(--neutral-800);
+            --bg-tertiary: var(--neutral-700);
+            --text-primary: var(--neutral-50);
+            --text-secondary: var(--neutral-200);
+            --text-tertiary: var(--neutral-300);
+            --border-color: var(--neutral-700);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .font-size-small {
+            --font-scale-factor: 0.85;
+            font-size: var(--font-size-small);
+        }
+
+        .font-size-medium {
+            --font-scale-factor: 1;
+            font-size: var(--font-size-medium);
+        }
+
+        .font-size-large {
+            --font-scale-factor: 1.15;
+            font-size: var(--font-size-large);
+        }
+
+        .compact-mode {
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            font-size: calc(14px * var(--font-scale-factor, 1));
+        }
+
+        .compact-mode .dashboard-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0.5rem;
+        }
+
+        .compact-mode .header {
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-md);
+        }
+
+        .compact-mode .logo {
+            width: 2.5rem;
+            height: 2.5rem;
+            min-width: 2.5rem;
+            font-size: 1rem;
+        }
+
+        .compact-mode h1 {
+            font-size: calc(1.25rem * var(--font-scale-factor, 1));
+        }
+
+        .compact-mode h2 {
+            font-size: calc(1.125rem * var(--font-scale-factor, 1));
+            margin-bottom: 0.75rem;
+        }
+
+        .compact-mode .content-area {
+            padding: 1rem;
+            min-height: calc(100vh - 8rem);
+        }
+
+        .compact-mode .btn {
+            padding: 0.75rem 1rem;
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+        }
+
+        .compact-mode .form-card {
+            padding: 1rem;
+        }
+
+        .compact-mode .profile-header {
+            padding: 1rem;
+        }
+
+        .compact-mode .avatar {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .compact-mode .notification-card {
+            padding: 0.75rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-weight: 400;
+            transition: background-color var(--transition-base), color var(--transition-base);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            padding-top: var(--safe-area-inset-top);
+            padding-bottom: var(--safe-area-inset-bottom);
+            font-size: calc(14px * var(--font-scale-factor, 1));
+        }
+
+        .dashboard-container {
+            opacity: 1;
+            transform: translateY(0);
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+            position: sticky;
+            top: 0.5rem;
+            z-index: 100;
+            margin-bottom: 0.5rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .logo {
+            width: 2.5rem;
+            height: 2.5rem;
+            min-width: 2.5rem;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: transform var(--transition-base);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-upload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .logo-text h1 {
+            font-size: calc(1rem * var(--font-scale-factor, 1));
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logo-text .text-small {
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        /* Prominent Exit Button Styles */
+        .exit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, var(--danger-500), var(--danger-600));
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: calc(0.9rem * var(--font-scale-factor, 1));
+            cursor: pointer;
+            transition: all var(--transition-base);
+            box-shadow: 0 4px 12px rgba(247, 37, 133, 0.3);
+            margin-left: 0.5rem;
+            min-width: 90px;
+        }
+
+        .exit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(247, 37, 133, 0.4);
+        }
+
+        .exit-btn:active {
+            transform: translateY(0);
+        }
+
+        .exit-btn i {
+            font-size: 1rem;
+        }
+
+        /* Keep the original nav dropdown for other options */
+        .nav-dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-dropdown-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+
+        .nav-dropdown-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-500);
+        }
+
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.5rem;
+            background-color: var(--bg-secondary);
+            min-width: 160px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .nav-dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.15s ease;
+        }
+
+        .nav-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: calc(0.9rem * var(--font-scale-factor, 1));
+            transition: background-color var(--transition-fast);
+            font-weight: 600;
+        }
+
+        .nav-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-dropdown-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-dropdown-item i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-500);
+        }
+
+        .theme-toggle.active {
+            background-color: var(--primary-500);
+            border-color: var(--primary-600);
+        }
+
+        .theme-toggle i {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: all var(--transition-base);
+        }
+
+        .theme-toggle.active i {
+            color: white;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+        }
+
+        .status-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: var(--success-500);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .mobile-nav-container {
+            display: block;
+            position: sticky;
+            bottom: 0;
+            left: 0.5rem;
+            right: 0.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin-top: 0.5rem;
+        }
+
+        .nav-list {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            gap: 0.25rem;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            flex: 1;
+            text-align: center;
+            min-height: 3rem;
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(114, 9, 183, 0.05));
+            color: var(--primary-500);
+        }
+
+        .nav-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .nav-text {
+            font-size: calc(0.625rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .desktop-nav-container {
+            display: block;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            width: 220px;
+            height: fit-content;
+            position: sticky;
+            top: 5rem;
+            flex-shrink: 0;
+        }
+
+        .content-area {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            min-height: calc(100vh - 8rem);
+            margin-bottom: 5.5rem;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .content-scroll {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            max-height: calc(100vh - 8rem);
+            padding-bottom: 1rem;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .form-card {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+        }
+
+        .form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-500);
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.375rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+            font-weight: 600;
+            transition: all var(--transition-fast);
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 3rem;
+            height: 1.75rem;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: var(--transition-fast);
+            border-radius: 1.75rem;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 1.25rem;
+            width: 1.25rem;
+            left: 0.25rem;
+            bottom: 0.25rem;
+            background-color: white;
+            transition: var(--transition-fast);
+            border-radius: 50%;
+        }
+
+        input:checked+.toggle-slider {
+            background-color: var(--primary-500);
+        }
+
+        input:checked+.toggle-slider:before {
+            transform: translateX(1.25rem);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: none;
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.35);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-500), var(--danger-600));
+            color: white;
+            box-shadow: 0 4px 12px rgba(247, 37, 133, 0.25);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(247, 37, 133, 0.35);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-500), var(--success-600));
+            color: white;
+            box-shadow: 0 4px 12px rgba(6, 214, 160, 0.25);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 214, 160, 0.35);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .avatar-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .avatar {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--bg-secondary);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: transform var(--transition-base);
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-upload {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .notification-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .notification-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+        }
+
+        .notification-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .crop-modal,
+        .dev-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.15s ease, visibility 0.15s ease;
+            padding: 0.75rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .crop-modal.active,
+        .dev-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .crop-modal-content,
+        .dev-modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            transform: translateY(20px);
+            transition: transform 0.15s ease;
+        }
+
+        .crop-modal.active .crop-modal-content,
+        .dev-modal.active .dev-modal-content {
+            transform: translateY(0);
+        }
+
+        .crop-modal-header,
+        .dev-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .crop-modal-close,
+        .dev-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0.25rem;
+            transition: color 0.15s ease;
+        }
+
+        .crop-modal-close:hover,
+        .dev-modal-close:hover {
+            color: var(--danger-500);
+        }
+
+        .status-message {
+            position: fixed;
+            top: 4rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--success-500);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0;
+            transition: transform 0.12s ease, opacity 0.12s ease;
+            max-width: 90%;
+            width: auto;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            pointer-events: none;
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+            font-weight: 600;
+        }
+
+        .status-message.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .status-message.error {
+            border-left-color: var(--danger-500);
+        }
+
+        .status-message.warning {
+            border-left-color: var(--warning-500);
+        }
+
+        .status-message i {
+            font-size: 1rem;
+        }
+
+        .footer {
+            margin-top: 0.75rem;
+            padding: 0.75rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+            font-weight: 600;
+        }
+
+        .mobile-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .back-button:hover {
+            background-color: var(--border-color);
+        }
+
+        .danger-zone {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(247, 37, 133, 0.05), rgba(255, 107, 107, 0.05));
+            border: 2px solid rgba(247, 37, 133, 0.2);
+        }
+
+        .crop-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .crop-area {
+            width: 100%;
+            height: 300px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background-color: var(--bg-tertiary);
+            position: relative;
+            cursor: crosshair;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .crop-image {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            margin: 0 auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .crop-selection {
+            position: absolute;
+            border: 2px solid var(--primary-500);
+            background-color: rgba(67, 97, 238, 0.1);
+            cursor: move;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        .crop-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary-500);
+            border: 2px solid var(--bg-secondary);
+            border-radius: 2px;
+            z-index: 11;
+        }
+
+        .crop-handle-nw {
+            top: -6px;
+            left: -6px;
+            cursor: nw-resize;
+        }
+
+        .crop-handle-ne {
+            top: -6px;
+            right: -6px;
+            cursor: ne-resize;
+        }
+
+        .crop-handle-sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: sw-resize;
+        }
+
+        .crop-handle-se {
+            bottom: -6px;
+            right: -6px;
+            cursor: se-resize;
+        }
+
+        .crop-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .crop-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--border-color);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .crop-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-500);
+            cursor: pointer;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        .crop-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-500);
+            cursor: pointer;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        .dev-user-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+        }
+
+        .dev-user-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dev-user-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .dev-user-item.selected {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-left: 3px solid var(--primary-500);
+        }
+
+        .dev-user-id {
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+            color: var(--text-tertiary);
+        }
+
+        .dev-activity-log {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .dev-activity-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+        }
+
+        .dev-activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .dev-activity-time {
+            color: var(--text-tertiary);
+            font-size: calc(0.625rem * var(--font-scale-factor, 1));
+        }
+
+        .dev-badge {
+            background-color: var(--danger-500);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: calc(0.625rem * var(--font-scale-factor, 1));
+            margin-left: 0.5rem;
+        }
+
+        .dev-disclaimer {
+            background-color: rgba(247, 37, 133, 0.1);
+            border-left: 4px solid var(--danger-500);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+        }
+
+        .dev-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dev-stat-card {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .dev-stat-value {
+            font-size: calc(1.5rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+            color: var(--primary-500);
+        }
+
+        .dev-stat-label {
+            font-size: calc(0.625rem * var(--font-scale-factor, 1));
+            color: var(--text-tertiary);
+        }
+
+        @media (min-width: 768px) {
+            .mobile-nav-container {
+                display: none;
+            }
+
+            .desktop-nav-container {
+                display: block;
+            }
+
+            .main-content {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+            }
+
+            .content-area {
+                margin-bottom: 0;
+                min-height: auto;
+            }
+
+            .nav-list {
+                flex-direction: column;
+                gap: 0.375rem;
+            }
+
+            .nav-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 0.75rem 1rem;
+                min-height: auto;
+            }
+
+            .nav-text {
+                font-size: calc(0.75rem * var(--font-scale-factor, 1));
+            }
+
+            .form-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            .btn-group {
+                flex-direction: row;
+            }
+
+            .status-message {
+                top: 5.5rem;
+                left: auto;
+                right: 1.5rem;
+                transform: translateX(0) translateY(-100%);
+                max-width: 350px;
+                white-space: normal;
+            }
+
+            .status-message.show {
+                transform: translateX(0) translateY(0);
+            }
+
+            .form-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+
+            .dashboard-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+
+            .crop-area {
+                height: 400px;
+                max-width: 500px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-container {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+
+            .crop-area {
+                height: 400px;
+                max-width: 500px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .exit-btn {
+                padding: 0.5rem 1rem;
+                min-width: 70px;
+                font-size: calc(0.8rem * var(--font-scale-factor, 1));
+            }
+
+            .exit-btn span {
+                display: none;
+            }
+
+            .exit-btn i {
+                margin: 0;
+                font-size: 1.1rem;
+            }
+
+            .header-controls {
+                gap: 0.3rem;
+            }
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--primary-500);
+            outline-offset: 2px;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+
+            .btn,
+            .nav-item,
+            .window-btn,
+            .theme-toggle,
+            .toggle-slider,
+            .nav-dropdown-btn,
+            .exit-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            input,
+            select,
+            textarea {
+                font-size: 16px;
+            }
+
+            .nav-dropdown-content {
+                min-width: 150px;
+            }
+
+            .crop-handle {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        .performance-optimized * {
+            animation-duration: 0.15s !important;
+            transition-duration: 0.15s !important;
+        }
+
+        .os-windows .btn,
+        .os-windows .nav-item {
+            border-radius: 4px;
+        }
+
+        .os-mac .btn,
+        .os-mac .nav-item {
+            border-radius: var(--radius-md);
+        }
+
+        .os-linux .header {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        .os-ios input,
+        .os-ios select,
+        .os-ios textarea {
+            font-size: 16px;
+        }
+
+        .os-android .status-message {
+            top: calc(4rem + var(--safe-area-inset-top));
+        }
+
+        h1 {
+            font-size: calc(1.5rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: calc(1.25rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: calc(1.125rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+        }
+
+        h4 {
+            font-size: calc(1rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+        }
+
+        p,
+        .text-body {
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+        }
+
+        .text-small {
+            font-size: calc(0.75rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+        }
+
+        .text-xsmall {
+            font-size: calc(0.625rem * var(--font-scale-factor, 1));
+            font-weight: 700;
+        }
+
+        @media (max-width: 767px) {
+            h1 {
+                font-size: calc(1.25rem * var(--font-scale-factor, 1));
+            }
+
+            h2 {
+                font-size: calc(1.125rem * var(--font-scale-factor, 1));
+            }
+
+            h3 {
+                font-size: calc(1rem * var(--font-scale-factor, 1));
+            }
+
+            h4 {
+                font-size: calc(0.875rem * var(--font-scale-factor, 1));
+            }
+
+            p,
+            .text-body {
+                font-size: calc(0.8125rem * var(--font-scale-factor, 1));
+            }
+
+            .text-small {
+                font-size: calc(0.75rem * var(--font-scale-factor, 1));
+                font-weight: 700;
+            }
+
+            .text-xsmall {
+                font-size: calc(0.625rem * var(--font-scale-factor, 1));
+                font-weight: 700;
+            }
+
+            .mobile-device .dashboard-container,
+            .mobile-device .content-area {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                padding: 15px !important;
+                box-sizing: border-box !important;
+            }
+
+            .mobile-device .form-grid,
+            .mobile-device .notification-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+
+            .mobile-device .form-card,
+            .mobile-device .notification-card {
+                width: 100% !important;
+                margin: 10px 0 !important;
+            }
+
+            .mobile-device .desktop-nav-container {
+                display: none !important;
+            }
+
+            .mobile-device .main-content {
+                flex-direction: column !important;
+            }
+
+            .mobile-device .btn {
+                padding: 12px 16px !important;
+                min-height: 44px !important;
+            }
+
+            .mobile-device input,
+            .mobile-device select,
+            .mobile-device textarea {
+                padding: 12px !important;
+                font-size: 16px !important;
+            }
+
+            .mobile-device body,
+            .mobile-device html {
+                overflow-x: hidden !important;
+                width: 100% !important;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .mobile-device {
+                -webkit-text-size-adjust: 100%;
+            }
+        }
+
+        .profile-warning {
+            background-color: rgba(247, 37, 133, 0.1);
+            border-left: 4px solid var(--danger-500);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            font-size: calc(0.875rem * var(--font-scale-factor, 1));
+        }
+
+        /* SUPABASE SYNC BUTTON STYLES */
+        .supabase-sync-btn {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+
+        .supabase-sync-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-500);
+        }
+
+        .supabase-sync-btn i {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: all var(--transition-base);
+        }
+
+        .supabase-sync-btn.syncing i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="font-size-medium">
+    <div class="crop-modal" id="cropModal">
+        <div class="crop-modal-content">
+            <div class="crop-modal-header">
+                <h3 id="cropModalTitle">Crop Logo Image</h3>
+                <button class="crop-modal-close" id="closeCropModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="text-body" id="cropModalText" style="margin-bottom: 1.25rem;">Draw a rectangle to select the area
+                for your logo and profile picture:</p>
+
+            <div class="crop-container">
+                <div class="crop-area" id="cropArea">
+                    <img id="cropImage" class="crop-image" alt="Image to crop">
+                    <div class="crop-selection" id="cropSelection">
+                        <div class="crop-handle crop-handle-nw"></div>
+                        <div class="crop-handle crop-handle-ne"></div>
+                        <div class="crop-handle crop-handle-sw"></div>
+                        <div class="crop-handle crop-handle-se"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="applyCrop">
+                    <i class="fas fa-check"></i> <span id="applyCropText">Apply to Logo & Profile</span>
+                </button>
+                <button class="btn btn-secondary" id="cancelCrop">
+                    <i class="fas fa-times"></i> <span id="cancelCropText">Cancel</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dev-modal" id="devModal">
+        <div class="dev-modal-content">
+            <div class="dev-modal-header">
+                <h3 id="devModalTitle">
+                    <i class="fas fa-user-secret"></i> Developer Control System
+                </h3>
+                <button class="dev-modal-close" id="closeDevModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="dev-disclaimer">
+                <i class="fas fa-balance-scale"></i>
+                <strong>Legal & Privacy Notice:</strong> This system is for authorized administrative purposes only. All
+                actions are logged and monitored. Unauthorized access or misuse is prohibited and may result in legal
+                consequences. By using this system, you consent to complete activity tracking and auditing.
+            </div>
+
+            <div id="devLoginSection">
+                <div class="form-group">
+                    <label for="devMasterPassword">Master Password</label>
+                    <input type="password" id="devMasterPassword" placeholder="Enter developer password">
+                </div>
+                <button class="btn btn-primary" id="devLoginBtn">Access Control Panel</button>
+            </div>
+
+            <div id="devControlSection" style="display: none;">
+                <div class="dev-stats-grid">
+                    <div class="dev-stat-card">
+                        <div class="dev-stat-value" id="totalUsersStat">0</div>
+                        <div class="dev-stat-label">Total Users</div>
+                    </div>
+                    <div class="dev-stat-card">
+                        <div class="dev-stat-value" id="activeTodayStat">0</div>
+                        <div class="dev-stat-label">Active Today</div>
+                    </div>
+                    <div class="dev-stat-card">
+                        <div class="dev-stat-value" id="totalActivitiesStat">0</div>
+                        <div class="dev-stat-label">Activities</div>
+                    </div>
+                    <div class="dev-stat-card">
+                        <div class="dev-stat-value" id="lockedAccountsStat">0</div>
+                        <div class="dev-stat-label">Locked</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Select User</label>
+                    <div class="dev-user-list" id="devUserList"></div>
+                </div>
+
+                <div id="devUserDetails" style="display: none;">
+                    <h4>User Details: <span id="selectedUserId"></span></h4>
+
+                    <div class="form-group">
+                        <label>Activity Log</label>
+                        <div class="dev-activity-log" id="devActivityLog"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>User Data</label>
+                        <textarea id="devUserData" rows="5" readonly></textarea>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="devImpersonateBtn">
+                            <i class="fas fa-mask"></i> Impersonate User
+                        </button>
+                        <button class="btn btn-secondary" id="devExportUserBtn">
+                            <i class="fas fa-download"></i> Export User Data
+                        </button>
+                        <button class="btn btn-danger" id="devDeleteUserBtn">
+                            <i class="fas fa-trash"></i> Delete User
+                        </button>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Edit User Data (JSON)</label>
+                        <textarea id="devEditUserData" rows="8"></textarea>
+                        <button class="btn btn-success" id="devSaveUserData" style="margin-top: 0.5rem;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </div>
+                </div>
+
+                <div class="btn-group" style="margin-top: 1rem;">
+                    <button class="btn btn-secondary" id="devExportAllBtn">
+                        <i class="fas fa-file-export"></i> Export All Data
+                    </button>
+                    <button class="btn btn-warning" id="devLogoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container" id="dashboardContainer">
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo" id="logo">
+                    <div id="logoIcon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <input type="file" id="logoUpload" class="logo-upload" accept="image/*" aria-label="Upload logo">
+                </div>
+                <div class="logo-text">
+                    <h1 id="dashboardTitle">Account Dashboard</h1>
+                    <p class="text-small" id="dashboardSubtitle">Manage your profile and preferences</p>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <div class="nav-dropdown-container">
+                    <button class="nav-dropdown-btn" id="navDropdownBtn" aria-label="Navigation menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="nav-dropdown-content" id="navDropdownContent">
+                        <button class="nav-dropdown-item" id="compactBtn">
+                            <i class="fas fa-compress-alt"></i>
+                            <span>Compact Mode</span>
+                        </button>
+                        <button class="nav-dropdown-item" id="maximizeBtn">
+                            <i class="fas fa-expand"></i>
+                            <span>Maximize</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <!-- SUPABASE SYNC BUTTON -->
+                <button class="supabase-sync-btn" id="supabaseSyncBtn" title="Sync to cloud">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </button>
+
+                <div class="sync-status" id="syncStatus">
+                    <div class="status-dot"></div>
+                    <span class="text-small text-bold" id="syncText">Synced</span>
+                </div>
+
+                <!-- PROMINENT EXIT BUTTON -->
+                <button class="exit-btn" id="exitBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Exit</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <nav class="desktop-nav-container" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li>
+                        <a href="#" class="nav-item active" data-section="profile">
+                            <div class="nav-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <span class="nav-text" id="navProfile">Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-section="preferences">
+                            <div class="nav-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <span class="nav-text" id="navPreferences">Preferences</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-section="notifications">
+                            <div class="nav-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <span class="nav-text" id="navNotifications">Notifications</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-item" data-section="account">
+                            <div class="nav-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <span class="nav-text" id="navAccount">Account</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="content-area">
+                <div class="content-scroll">
+                    <section class="content-section active" id="profile">
+                        <div class="mobile-section-header">
+                            <h2 id="profileTitle">Personal Profile</h2>
+                            <div class="back-button" onclick="scrollToTop()">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                        </div>
+                        <div class="profile-warning" id="profileWarning">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>Complete your profile to access all
+                                features.</strong> Please fill in your ID number, name, and email address.
+                        </div>
+
+                        <div class="profile-header">
+                            <div class="avatar-container">
+                                <img src="https://ui-avatars.com/api/?name=User&background=4361ee&color=fff&bold=true"
+                                    class="avatar" id="userAvatar" alt="Profile picture">
+                                <input type="file" id="avatarUpload" class="avatar-upload" accept="image/*">
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="userName">User Profile</h3>
+                                <p id="userRole" class="text-small">Premium Member</p>
+                                <button class="btn btn-secondary"
+                                    onclick="document.getElementById('avatarUpload').click()">
+                                    <i class="fas fa-camera"></i> <span id="changeAvatarText">Change Avatar</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-card">
+                                <h3 id="basicInfoTitle">Basic Information</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="idNumber" id="idNumberLabel">ID Number <span
+                                                style="color: var(--danger-500);">*</span></label>
+                                        <input type="text" id="idNumber" data-save="profile"
+                                            placeholder="Enter your ID number" autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName" id="firstNameLabel">First Name <span
+                                                style="color: var(--danger-500);">*</span></label>
+                                        <input type="text" id="firstName" data-save="profile" placeholder="WILLLFORT"
+                                            autocomplete="given-name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName" id="lastNameLabel">Last Name <span
+                                                style="color: var(--danger-500);">*</span></label>
+                                        <input type="text" id="lastName" data-save="profile" placeholder="LOVE"
+                                            autocomplete="family-name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userEmail" id="emailLabel">Email Address <span
+                                            style="color: var(--danger-500);">*</span></label>
+                                    <input type="email" id="userEmail" data-save="profile"
+                                        placeholder="WILLFORT@example.com" autocomplete="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userPhone" id="phoneLabel">Phone Number</label>
+                                    <input type="tel" id="userPhone" data-save="profile" placeholder="+1 (555) 123-4567"
+                                        autocomplete="tel">
+                                </div>
+                            </div>
+
+                            <div class="form-card">
+                                <h3 id="aboutTitle">About You</h3>
+                                <div class="form-group">
+                                    <label for="userBio" id="bioLabel">Bio</label>
+                                    <textarea id="userBio" data-save="profile" rows="3"
+                                        placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userLocation" id="locationLabel">Location</label>
+                                    <input type="text" id="userLocation" data-save="profile" placeholder="City, Country"
+                                        autocomplete="address-level2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="saveProfileAndContinue()" id="saveProfileBtn">
+                                <i class="fas fa-save"></i> <span id="saveProfileText">Save Profile & Continue</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="content-section" id="preferences">
+                        <div class="mobile-section-header">
+                            <h2 id="preferencesTitle">Preferences</h2>
+                            <div class="back-button" onclick="scrollToTop()">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                        </div>
+                        <p class="text-body" id="preferencesDescription">Customize your dashboard appearance and
+                            behavior.</p>
+
+                        <div class="form-grid">
+                            <div class="form-card">
+                                <h3 id="appearanceTitle">Appearance</h3>
+                                <div class="form-group">
+                                    <label for="themeSelect" id="themeLabel">Theme</label>
+                                    <select id="themeSelect" data-save="preferences">
+                                        <option value="light">Light Mode</option>
+                                        <option value="dark">Dark Mode</option>
+                                        <option value="auto">Auto (System)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="language" id="languageLabel">Language</label>
+                                    <select id="language" data-save="preferences">
+                                        <option value="en-us">English (US)</option>
+                                        <option value="en-gb">English (UK)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-card">
+                                <h3 id="timeDateTitle">Time & Date</h3>
+                                <div class="form-group">
+                                    <label for="dateFormat" id="dateFormatLabel">Date Format</label>
+                                    <select id="dateFormat" data-save="preferences">
+                                        <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                                        <option value="dd/mm/yyyy">DD/MM/YYYY</option>
+                                        <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="timezone" id="timezoneLabel">Time Zone</label>
+                                    <select id="timezone" data-save="preferences">
+                                        <option value="est">Eastern Time (ET)</option>
+                                        <option value="cst">Central Time (CT)</option>
+                                        <option value="pst">Pacific Time (PT)</option>
+                                        <option value="gmt">GMT</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-card">
+                                <h3 id="accessibilityTitle">Accessibility</h3>
+                                <div class="form-group">
+                                    <label for="fontSize" id="fontSizeLabel">Font Size</label>
+                                    <select id="fontSize" data-save="preferences">
+                                        <option value="small">Small</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="large">Large</option>
+                                    </select>
+                                </div>
+                                <div class="toggle-container">
+                                    <div>
+                                        <label class="text-bold" id="reduceMotionLabel">Reduce Motion</label>
+                                        <p class="text-xsmall" id="reduceMotionDescription">Minimize animations</p>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="reduceMotion" data-save="preferences">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="saveSection('preferences')">
+                                <i class="fas fa-save"></i> <span id="savePreferencesBtn">Save Preferences</span>
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetPreferences()">
+                                <i class="fas fa-undo"></i> <span id="resetDefaultsBtn">Reset Defaults</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="content-section" id="notifications">
+                        <div class="mobile-section-header">
+                            <h2 id="notificationsTitle">Notifications</h2>
+                            <div class="back-button" onclick="scrollToTop()">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                        </div>
+                        <p class="text-body" id="notificationsDescription">Control how and when you receive
+                            notifications.</p>
+
+                        <div class="notification-grid">
+                            <div class="notification-card">
+                                <div>
+                                    <h4 id="emailAlertsTitle">Email Alerts</h4>
+                                    <p class="text-xsmall" id="emailAlertsDescription">Important updates</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailAlerts" data-save="notifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="notification-card">
+                                <div>
+                                    <h4 id="pushAlertsTitle">Push Notifications</h4>
+                                    <p class="text-xsmall" id="pushAlertsDescription">Browser alerts</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="pushAlerts" data-save="notifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="notification-card">
+                                <div>
+                                    <h4 id="securityAlertsTitle">Security Alerts</h4>
+                                    <p class="text-xsmall" id="securityAlertsDescription">Security notifications</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="securityAlerts" data-save="notifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="notification-card">
+                                <div>
+                                    <h4 id="weeklyDigestTitle">Weekly Digest</h4>
+                                    <p class="text-xsmall" id="weeklyDigestDescription">Weekly summary</p>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="weeklyDigest" data-save="notifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="saveSection('notifications')">
+                                <i class="fas fa-save"></i> <span id="saveNotificationsBtn">Save Settings</span>
+                            </button>
+                            <button class="btn btn-secondary" onclick="selectAllNotifications()">
+                                <i class="fas fa-check-square"></i> <span id="selectAllNotificationsBtn">Select
+                                    All</span>
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="content-section" id="account">
+                        <div class="mobile-section-header">
+                            <h2 id="accountTitle">Account</h2>
+                            <div class="back-button" onclick="scrollToTop()">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                        </div>
+                        <p class="text-body" id="accountDescription">Manage your account settings and data.</p>
+
+                        <div class="form-grid">
+                            <div class="form-card">
+                                <h3 id="accountSettingsTitle">Account Settings</h3>
+                                <div class="form-group">
+                                    <label for="accountVisibility" id="accountVisibilityLabel">Account
+                                        Visibility</label>
+                                    <select id="accountVisibility" data-save="account">
+                                        <option value="public">Public</option>
+                                        <option value="private">Private</option>
+                                        <option value="hidden">Hidden</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dataRetention" id="dataRetentionLabel">Data Retention</label>
+                                    <select id="dataRetention" data-save="account">
+                                        <option value="30">30 Days</option>
+                                        <option value="90">90 Days</option>
+                                        <option value="365">1 Year</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-card">
+                                <h3 id="dataManagementTitle">Data Management</h3>
+                                <p class="text-small" id="dataManagementDescription" style="margin-bottom: 1rem;">Export
+                                    your data in various formats</p>
+                                <div class="btn-group" style="flex-direction: column; gap: 0.5rem;">
+                                    <button class="btn btn-secondary" onclick="exportData('json')">
+                                        <i class="fas fa-file-code"></i> <span id="exportJsonBtn">Export as JSON</span>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="exportData('csv')">
+                                        <i class="fas fa-file-csv"></i> <span id="exportCsvBtn">Export as CSV</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="danger-zone">
+                            <h3><i class="fas fa-exclamation-triangle"></i> <span id="dangerZoneTitle">Danger
+                                    Zone</span></h3>
+                            <p class="text-small" id="dangerZoneDescription" style="margin-bottom: 1rem;">Permanent
+                                actions cannot be undone. Proceed with caution.</p>
+                            <div class="btn-group">
+                                <button class="btn btn-danger" onclick="deleteAccount()">
+                                    <i class="fas fa-trash-alt"></i> <span id="deleteAccountBtn">Delete Account</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+
+        <nav class="mobile-nav-container" aria-label="Mobile navigation">
+            <ul class="nav-list">
+                <li>
+                    <a href="#" class="nav-item active" data-section="profile">
+                        <div class="nav-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span class="nav-text" id="mobileNavProfile">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item" data-section="preferences">
+                        <div class="nav-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <span class="nav-text" id="mobileNavPreferences">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item" data-section="notifications">
+                        <div class="nav-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <span class="nav-text" id="mobileNavNotifications">Alerts</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item" data-section="account">
+                        <div class="nav-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <span class="nav-text" id="mobileNavAccount">Account</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <footer class="footer">
+            <p class="text-small">
+                <span id="lastSync">Account Dashboard • Last sync: Just now</span>
+            </p>
+        </footer>
+    </div>
+
+    <div class="status-message" id="statusMessage">
+        <i class="fas fa-check-circle"></i>
+        <span id="statusText">Changes saved successfully</span>
+    </div>
+
+    <!-- SUPABASE LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        (function () {
+            'use strict';
+
+            // ===== STORAGE HELPER FUNCTIONS =====
+            function setSecureItem(key, value) {
+                try {
+                    localStorage.setItem(key, value);
+                    console.log(`✅ Saved to localStorage: ${key}`);
+                } catch (e) {
+                    console.log(`⚠️ localStorage blocked, using cookie for: ${key}`);
+                }
+
+                document.cookie = `${key}=${value}; path=/; max-age=31536000; SameSite=Lax`;
+            }
+
+            function getSecureItem(key) {
+                try {
+                    const value = localStorage.getItem(key);
+                    if (value) {
+                        console.log(`✅ Found in localStorage: ${key}`);
+                        return value;
+                    }
+                } catch (e) {
+                    console.log(`⚠️ localStorage blocked, checking cookies for: ${key}`);
+                }
+
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    const [cookieName, cookieValue] = cookie.trim().split('=');
+                    if (cookieName === key) {
+                        console.log(`✅ Found in cookies: ${key}`);
+                        return cookieValue;
+                    }
+                }
+
+                return null;
+            }
+
+            function removeSecureItem(key) {
+                try {
+                    localStorage.removeItem(key);
+                } catch (e) { }
+
+                document.cookie = `${key}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+            }
+
+            // ===== SUPABASE INTEGRATION =====
+            const SUPABASE_URL = 'https://xoerkbmtucvzoilxdupf.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvZXJrYm10dWN2em9pbHhkdXBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5MzM5MzIsImV4cCI6MjA4NzUwOTkzMn0.DFerCmemRYqT6TN98YDgfMk0btBlue_shPrNZQFCd3U';
+
+            let supabaseClient = null;
+            let autoSyncTimer = null;
+            let lastSyncTime = null;
+            let realtimeSubscription = null;
+
+            function getSupabaseClient() {
+                if (supabaseClient) return supabaseClient;
+                if (typeof supabase !== 'undefined') {
+                    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                }
+                return supabaseClient;
+            }
+
+            async function uploadImage(file, bucket = 'avatars') {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return null;
+
+                try {
+                    console.log(`Uploading to ${bucket} bucket...`);
+
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${currentUserID}/${Date.now()}.${fileExt}`;
+
+                    const { data, error } = await supabase.storage
+                        .from(bucket)
+                        .upload(fileName, file, {
+                            cacheControl: '3600',
+                            upsert: true
+                        });
+
+                    if (error) {
+                        console.error('Upload error:', error);
+                        if (error.message.includes('Bucket not found')) {
+                            showStatus(`⚠️ Bucket "${bucket}" not found. Please create it in Supabase.`, 'warning');
+                        } else if (error.message.includes('row-level security')) {
+                            showStatus('⚠️ Storage permission error. Check bucket policies.', 'warning');
+                        } else {
+                            showStatus(`⚠️ Upload failed: ${error.message}`, 'warning');
+                        }
+                        return null;
+                    }
+
+                    const { data: urlData } = supabase.storage
+                        .from(bucket)
+                        .getPublicUrl(fileName);
+
+                    console.log('Upload successful:', urlData.publicUrl);
+                    return urlData.publicUrl;
+                } catch (error) {
+                    console.error('Upload exception:', error);
+                    showStatus('⚠️ Upload failed - check console', 'warning');
+                    return null;
+                }
+            }
+
+            async function syncProfileToSupabase() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID || !currentUserData) return false;
+
+                try {
+                    const profile = currentUserData.profile || {};
+
+                    const { error } = await supabase
+                        .from('profiles')
+                        .upsert({
+                            user_id: currentUserID,
+                            email: profile.userEmail,
+                            full_name: `${profile.firstName || ''} ${profile.lastName || ''}`.trim(),
+                            avatar_url: profile.avatar,
+                            phone: profile.userPhone,
+                            bio: profile.userBio,
+                            location: profile.userLocation,
+                            id_number: profile.idNumber,
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'user_id' });
+
+                    if (error) {
+                        console.log('Profile sync error:', error);
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    console.log('Profile sync exception:', e);
+                    return false;
+                }
+            }
+
+            async function syncSettingsToSupabase() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID || !currentUserData) return false;
+
+                try {
+                    const { error } = await supabase
+                        .from('user_settings')
+                        .upsert({
+                            user_id: currentUserID,
+                            preferences: currentUserData.preferences || {},
+                            notifications: currentUserData.notifications || {},
+                            account: currentUserData.account || {},
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'user_id' });
+
+                    if (error) {
+                        console.log('Settings sync error:', error);
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    console.log('Settings sync exception:', e);
+                    return false;
+                }
+            }
+
+            async function logActivityToSupabase(action, details = {}) {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return false;
+
+                try {
+                    const { error } = await supabase
+                        .from('activity_logs')
+                        .insert({
+                            user_id: currentUserID,
+                            action: action,
+                            details: details,
+                            device_info: navigator.userAgent.substring(0, 200)
+                        });
+
+                    if (error) {
+                        console.log('Activity log error:', error);
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    console.log('Activity log exception:', e);
+                    return false;
+                }
+            }
+
+            async function createBackup() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return false;
+
+                try {
+                    const users = getAllUsers();
+                    const activities = getActivityLog();
+
+                    const { error } = await supabase
+                        .from('backups')
+                        .insert({
+                            user_id: currentUserID,
+                            all_users: users,
+                            activities: activities,
+                            created_at: new Date().toISOString()
+                        });
+
+                    if (error) {
+                        console.log('Backup error:', error);
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    console.log('Backup exception:', e);
+                    return false;
+                }
+            }
+
+            async function updateSyncStatus() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return false;
+
+                try {
+                    const dataHash = btoa(JSON.stringify(currentUserData)).substring(0, 50);
+
+                    const { error } = await supabase
+                        .from('sync_status')
+                        .upsert({
+                            user_id: currentUserID,
+                            last_sync: new Date().toISOString(),
+                            device_info: navigator.userAgent.substring(0, 200),
+                            sync_hash: dataHash
+                        });
+
+                    if (error) {
+                        console.log('Sync status error:', error);
+                        return false;
+                    }
+                    return true;
+                } catch (e) {
+                    console.log('Sync status exception:', e);
+                    return false;
+                }
+            }
+
+            async function syncToSupabase(isAuto = false) {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID || !currentUserData) return false;
+
+                try {
+                    if (!isAuto) {
+                        const syncBtn = document.getElementById('supabaseSyncBtn');
+                        if (syncBtn) {
+                            syncBtn.classList.add('syncing');
+                            syncBtn.innerHTML = '<i class="fas fa-spinner"></i>';
+                        }
+                    }
+
+                    const promises = [
+                        syncProfileToSupabase(),
+                        syncSettingsToSupabase(),
+                        logActivityToSupabase('data_sync', { auto: isAuto }),
+                        updateSyncStatus()
+                    ];
+
+                    await Promise.allSettled(promises);
+
+                    const syncCount = localStorage.getItem('sync_count') || 0;
+                    if (parseInt(syncCount) % 5 === 0) {
+                        createBackup();
+                    }
+                    localStorage.setItem('sync_count', (parseInt(syncCount) + 1).toString());
+
+                    const syncTime = new Date().toISOString();
+                    lastSyncTime = syncTime;
+                    localStorage.setItem('last_supabase_sync', syncTime);
+
+                    if (!isAuto) {
+                        showStatus('✅ Synced to cloud');
+                        const syncBtn = document.getElementById('supabaseSyncBtn');
+                        if (syncBtn) {
+                            syncBtn.innerHTML = '<i class="fas fa-check"></i>';
+                            setTimeout(() => {
+                                syncBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i>';
+                                syncBtn.classList.remove('syncing');
+                            }, 2000);
+                        }
+                    }
+                    return true;
+                } catch (e) {
+                    if (!isAuto) {
+                        const syncBtn = document.getElementById('supabaseSyncBtn');
+                        if (syncBtn) {
+                            syncBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i>';
+                            syncBtn.classList.remove('syncing');
+                        }
+                        showStatus('⚠️ Sync failed - check connection', 'warning');
+                    }
+                    return false;
+                }
+            }
+
+            async function loadFromSupabase() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return false;
+
+                try {
+                    let dataLoaded = false;
+
+                    try {
+                        const { data: profile, error: profileError } = await supabase
+                            .from('profiles')
+                            .select('*')
+                            .eq('user_id', currentUserID)
+                            .maybeSingle();
+
+                        if (!profileError && profile) {
+                            if (!currentUserData.profile) currentUserData.profile = {};
+                            currentUserData.profile.userEmail = profile.email;
+                            currentUserData.profile.firstName = profile.full_name?.split(' ')[0] || '';
+                            currentUserData.profile.lastName = profile.full_name?.split(' ').slice(1).join(' ') || '';
+                            currentUserData.profile.avatar = profile.avatar_url;
+                            currentUserData.profile.userPhone = profile.phone;
+                            currentUserData.profile.userBio = profile.bio;
+                            currentUserData.profile.userLocation = profile.location;
+                            currentUserData.profile.idNumber = profile.id_number;
+                            dataLoaded = true;
+                        }
+                    } catch (e) {
+                        console.log('Profile table not ready yet');
+                    }
+
+                    try {
+                        const { data: settings, error: settingsError } = await supabase
+                            .from('user_settings')
+                            .select('*')
+                            .eq('user_id', currentUserID)
+                            .maybeSingle();
+
+                        if (!settingsError && settings) {
+                            currentUserData.preferences = settings.preferences || currentUserData.preferences;
+                            currentUserData.notifications = settings.notifications || currentUserData.notifications;
+                            currentUserData.account = settings.account || currentUserData.account;
+                            dataLoaded = true;
+                        }
+                    } catch (e) {
+                        console.log('Settings table not ready yet');
+                    }
+
+                    return dataLoaded;
+                } catch (e) {
+                    console.log('Error loading from Supabase:', e);
+                    return false;
+                }
+            }
+
+            function setupRealtimeSubscription() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return;
+
+                if (realtimeSubscription) {
+                    realtimeSubscription.unsubscribe();
+                }
+
+                realtimeSubscription = supabase
+                    .channel('user_changes')
+                    .on('postgres_changes',
+                        {
+                            event: 'UPDATE',
+                            schema: 'public',
+                            table: 'profiles',
+                            filter: `user_id=eq.${currentUserID}`
+                        },
+                        async (payload) => {
+                            const timeDiff = Date.now() - new Date(payload.new.updated_at).getTime();
+                            if (timeDiff > 2000) {
+                                if (confirm('📡 Your profile was updated on another device. Reload now?')) {
+                                    await loadFromSupabase();
+                                    applyUserData();
+                                    loadUserImages();
+                                    showStatus('✅ Profile updated from another device');
+                                }
+                            }
+                        }
+                    )
+                    .on('postgres_changes',
+                        {
+                            event: 'UPDATE',
+                            schema: 'public',
+                            table: 'user_settings',
+                            filter: `user_id=eq.${currentUserID}`
+                        },
+                        async (payload) => {
+                            const timeDiff = Date.now() - new Date(payload.new.updated_at).getTime();
+                            if (timeDiff > 2000) {
+                                showStatus('📡 Settings changed on another device', 'info');
+                                await loadFromSupabase();
+                                applyTheme();
+                            }
+                        }
+                    )
+                    .subscribe();
+            }
+
+            async function checkForUpdates() {
+                const supabase = getSupabaseClient();
+                if (!supabase || !currentUserID) return;
+
+                try {
+                    const { data, error } = await supabase
+                        .from('sync_status')
+                        .select('*')
+                        .eq('user_id', currentUserID)
+                        .maybeSingle();
+
+                    if (!error && data && data.last_sync) {
+                        const cloudTime = new Date(data.last_sync).getTime();
+                        const localTime = lastSyncTime ? new Date(lastSyncTime).getTime() : 0;
+
+                        if (cloudTime > localTime + 5000) {
+                            const shouldLoad = confirm('🔄 Newer data found in cloud. Load it?');
+                            if (shouldLoad) {
+                                await loadFromSupabase();
+                                applyUserData();
+                                loadUserImages();
+                                showStatus('📱 Loaded data from another device');
+                            }
+                        }
+                    }
+                } catch (e) { }
+            }
+
+            function triggerAutoSync() {
+                if (autoSyncTimer) {
+                    clearTimeout(autoSyncTimer);
+                }
+                autoSyncTimer = setTimeout(() => {
+                    syncToSupabase(true);
+                }, 3000);
+            }
+
+            function startCloudBackup() {
+                setInterval(() => {
+                    if (currentUserID && currentUserData && navigator.onLine) {
+                        createBackup();
+                        console.log('💾 Cloud backup completed');
+                    }
+                }, 60 * 60 * 1000);
+            }
+
+            function startMultiDeviceCheck() {
+                setInterval(() => {
+                    if (currentUserID && currentUserData && navigator.onLine) {
+                        checkForUpdates();
+                    }
+                }, 30000);
+            }
+
+            async function restoreFromSupabase() {
+                const supabase = getSupabaseClient();
+                if (!supabase) return false;
+
+                try {
+                    const success = await loadFromSupabase();
+                    if (success) {
+                        showStatus('✅ Restored from cloud');
+                        return true;
+                    }
+
+                    const { data, error } = await supabase
+                        .from('backups')
+                        .select('*')
+                        .order('created_at', { ascending: false })
+                        .limit(1);
+
+                    if (!error && data && data.length > 0 && data[0].all_users) {
+                        if (!localStorage.getItem('secure_dashboard_users_v6')) {
+                            localStorage.setItem('secure_dashboard_users_v6', JSON.stringify(data[0].all_users));
+                            console.log('✅ Restored from backup');
+                            return true;
+                        }
+                    }
+                } catch (e) {
+                    console.log('Restore error:', e);
+                }
+                return false;
+            }
+
+            // ===== MAIN APPLICATION CODE =====
+            let currentUserID = null;
+            let currentUserData = null;
+            const USERS_KEY = 'secure_dashboard_users_v6';
+            const CURRENT_USER_KEY = 'secure_dashboard_current_user_v6';
+            const ACTIVITY_KEY = 'secure_dashboard_activity_v6';
+            const DEV_MASTER_PASSWORD = 'admin123';
+
+            let db = null;
+            const DB_NAME = 'SecureDashboardDB';
+            const DB_VERSION = 2;
+            const IMAGE_STORE = 'images';
+
+            let settings = {
+                compactMode: false,
+                autoSave: true,
+                lastBackup: null,
+                performanceMode: false,
+                touchOptimized: false
+            };
+
+            let currentState = {
+                isOnline: navigator.onLine,
+                isFullscreen: false,
+                isCompact: false,
+                activeSection: 'profile',
+                osType: 'unknown',
+                isTouchDevice: false,
+                isDevMode: false,
+                selectedDevUser: null,
+                profileComplete: false
+            };
+
+            let cropState = {
+                image: null,
+                imageWidth: 0,
+                imageHeight: 0,
+                containerWidth: 0,
+                containerHeight: 0,
+                scale: 1,
+                offsetX: 0,
+                offsetY: 0,
+                selection: { x: 0, y: 0, width: 150, height: 150 },
+                isDragging: false,
+                isResizing: false,
+                resizeHandle: '',
+                startX: 0,
+                startY: 0,
+                startSelection: { x: 0, y: 0, width: 0, height: 0 }
+            };
+
+            function detectMobile() {
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+                if (isMobile || isTouchDevice) {
+                    document.documentElement.classList.add('mobile-device');
+                    document.body.classList.add('mobile-view');
+                    document.body.style.overflowX = 'hidden';
+                    document.body.style.width = '100vw';
+                }
+            }
+            detectMobile();
+
+            async function initIndexedDB() {
+                return new Promise((resolve) => {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                    request.onerror = () => {
+                        resolve(false);
+                    };
+
+                    request.onsuccess = () => {
+                        db = request.result;
+                        resolve(true);
+                    };
+
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        if (!db.objectStoreNames.contains(IMAGE_STORE)) {
+                            const store = db.createObjectStore(IMAGE_STORE, { keyPath: 'id' });
+                            store.createIndex('timestamp', 'timestamp', { unique: false });
+                        }
+                    };
+                });
+            }
+
+            async function saveImageToDB(id, imageData) {
+                if (!db) return false;
+
+                return new Promise((resolve) => {
+                    try {
+                        const transaction = db.transaction([IMAGE_STORE], 'readwrite');
+                        const store = transaction.objectStore(IMAGE_STORE);
+
+                        const request = store.put({
+                            id: `${currentUserID}_${id}`,
+                            data: imageData,
+                            timestamp: Date.now()
+                        });
+
+                        request.onsuccess = () => resolve(true);
+                        request.onerror = () => {
+                            resolve(false);
+                        };
+                    } catch (error) {
+                        resolve(false);
+                    }
+                });
+            }
+
+            async function getImageFromDB(id) {
+                if (!db) return null;
+
+                return new Promise((resolve) => {
+                    try {
+                        const transaction = db.transaction([IMAGE_STORE], 'readonly');
+                        const store = transaction.objectStore(IMAGE_STORE);
+                        const request = store.get(`${currentUserID}_${id}`);
+
+                        request.onsuccess = () => resolve(request.result ? request.result.data : null);
+                        request.onerror = () => resolve(null);
+                    } catch (error) {
+                        resolve(null);
+                    }
+                });
+            }
+
+            function detectOS() {
+                const userAgent = navigator.userAgent;
+                if (userAgent.includes('Win')) return 'windows';
+                if (userAgent.includes('Mac')) return 'mac';
+                if (userAgent.includes('Linux')) return 'linux';
+                if (userAgent.includes('Android')) return 'android';
+                if (userAgent.includes('iPhone') || userAgent.includes('iPad') || userAgent.includes('iPod')) return 'ios';
+                if (userAgent.includes('CrOS')) return 'chromeos';
+                return 'unknown';
+            }
+
+            function detectTouchDevice() {
+                return (('ontouchstart' in window) ||
+                    (navigator.maxTouchPoints > 0) ||
+                    (navigator.msMaxTouchPoints > 0));
+            }
+
+            function applyOSClasses() {
+                const osClass = `os-${currentState.osType}`;
+                document.body.classList.add(osClass);
+
+                if (currentState.isTouchDevice) {
+                    document.body.classList.add('touch-device');
+                    settings.touchOptimized = true;
+                }
+
+                if (currentState.osType === 'ios') {
+                    document.documentElement.style.setProperty('--safe-area-inset-top', 'env(safe-area-inset-top)');
+                    document.documentElement.style.setProperty('--safe-area-inset-bottom', 'env(safe-area-inset-bottom)');
+                }
+            }
+
+            function enablePerformanceMode() {
+                settings.performanceMode = true;
+                document.body.classList.add('performance-optimized');
+
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.body.style.setProperty('--transition-fast', '0s');
+                    document.body.style.setProperty('--transition-base', '0s');
+                    document.body.style.setProperty('--transition-slow', '0s');
+                }
+            }
+
+            function optimizeTouchResponse() {
+                if (!currentState.isTouchDevice) return;
+
+                document.querySelectorAll('.btn, .nav-item, .window-btn, .theme-toggle, .toggle-slider, .nav-dropdown-btn, .exit-btn').forEach(el => {
+                    el.style.minHeight = '44px';
+                    el.style.minWidth = '44px';
+                });
+            }
+
+            function logActivity(userId, action, details = {}) {
+                try {
+                    const activities = JSON.parse(localStorage.getItem(ACTIVITY_KEY) || '[]');
+                    activities.push({
+                        userId: userId,
+                        action: action,
+                        details: details,
+                        timestamp: new Date().toISOString(),
+                        userAgent: navigator.userAgent,
+                        platform: navigator.platform,
+                        language: navigator.language
+                    });
+
+                    if (activities.length > 10000) {
+                        activities.splice(0, activities.length - 10000);
+                    }
+
+                    localStorage.setItem(ACTIVITY_KEY, JSON.stringify(activities));
+                } catch (e) { }
+            }
+
+            function getActivityLog(userId = null) {
+                try {
+                    const activities = JSON.parse(localStorage.getItem(ACTIVITY_KEY) || '[]');
+                    if (userId) {
+                        return activities.filter(a => a.userId === userId).reverse();
+                    }
+                    return activities.reverse();
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function getDefaultUserData() {
+                return {
+                    profile: {
+                        idNumber: '',
+                        firstName: '',
+                        lastName: '',
+                        userEmail: '',
+                        userPhone: '',
+                        userBio: '',
+                        userLocation: '',
+                        avatar: ''
+                    },
+                    preferences: {
+                        theme: 'light',
+                        language: 'en-us',
+                        dateFormat: 'mm/dd/yyyy',
+                        timezone: 'est',
+                        reduceMotion: false,
+                        timeFormat: false,
+                        fontSize: 'medium'
+                    },
+                    notifications: {
+                        emailAlerts: true,
+                        pushAlerts: true,
+                        securityAlerts: true,
+                        weeklyDigest: true
+                    },
+                    account: {
+                        accountVisibility: 'public',
+                        dataRetention: '30',
+                        autoBackup: true
+                    },
+                    logo: '',
+                    created: new Date().toISOString(),
+                    lastActive: new Date().toISOString()
+                };
+            }
+
+            function getAllUsers() {
+                const usersData = localStorage.getItem(USERS_KEY);
+                return usersData ? JSON.parse(usersData) : {};
+            }
+
+            function saveAllUsers(users) {
+                try {
+                    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+                    return true;
+                } catch (e) {
+                    showStatus('Error saving users data', 'error');
+                    return false;
+                }
+            }
+
+            function saveCurrentUserData() {
+                if (!currentUserID || !currentUserData) return false;
+
+                currentUserData.lastActive = new Date().toISOString();
+                const users = getAllUsers();
+                users[currentUserID] = currentUserData;
+
+                if (saveAllUsers(users)) {
+                    updateSyncStatus();
+                    logActivity(currentUserID, 'data_saved');
+                    return true;
+                }
+                return false;
+            }
+
+            function loadUserData(userId) {
+                const users = getAllUsers();
+                if (users[userId]) {
+                    currentUserData = users[userId];
+
+                    if (!currentUserData.profile) currentUserData.profile = {};
+                    if (!currentUserData.preferences) currentUserData.preferences = {};
+                    if (!currentUserData.notifications) currentUserData.notifications = {};
+                    if (!currentUserData.account) currentUserData.account = {};
+
+                    logActivity(userId, 'user_loaded');
+                    return true;
+                }
+                return false;
+            }
+
+            function createNewUser() {
+                const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                currentUserID = userId;
+                currentUserData = getDefaultUserData();
+
+                const users = getAllUsers();
+                users[userId] = currentUserData;
+                saveAllUsers(users);
+
+                setSecureItem(CURRENT_USER_KEY, userId);
+                logActivity(userId, 'user_created');
+
+                return userId;
+            }
+
+            function isProfileComplete() {
+                if (!currentUserData || !currentUserData.profile) return false;
+
+                const profile = currentUserData.profile;
+                return profile.idNumber && profile.idNumber.trim() !== '' &&
+                    profile.firstName && profile.firstName.trim() !== '' &&
+                    profile.lastName && profile.lastName.trim() !== '' &&
+                    profile.userEmail && profile.userEmail.trim() !== '';
+            }
+
+            function checkProfileAndRedirect() {
+                const isComplete = isProfileComplete();
+                currentState.profileComplete = isComplete;
+
+                const profileWarning = document.getElementById('profileWarning');
+                if (profileWarning) {
+                    profileWarning.style.display = isComplete ? 'none' : 'block';
+                }
+
+                if (!isComplete && currentState.activeSection !== 'profile') {
+                    navigateToSection('profile', true);
+                    showStatus('Please complete your profile first', 'warning');
+                }
+
+                return isComplete;
+            }
+
+            // ===== EXIT FUNCTION =====
+            function exitApplication() {
+                if (confirm('Are you sure you want to exit?')) {
+                    showStatus('Exiting application...', 'warning');
+
+                    document.body.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                    document.body.style.opacity = '0';
+                    document.body.style.transform = 'scale(0.95)';
+
+                    setTimeout(() => {
+                        if (window.history.length > 1) {
+                            window.history.back();
+                        } else {
+                            window.close();
+                        }
+                    }, 200);
+                }
+            }
+
+            // ===== INIT FUNCTION =====
+            async function init() {
+                try {
+                    localStorage.setItem('test_storage', 'working');
+                    const test = localStorage.getItem('test_storage');
+                    console.log('✅ localStorage test:', test);
+                    localStorage.removeItem('test_storage');
+                } catch (e) {
+                    console.log('⚠️ localStorage may be blocked, will use cookies');
+                }
+
+                currentState.osType = detectOS();
+                currentState.isTouchDevice = detectTouchDevice();
+
+                applyOSClasses();
+                enablePerformanceMode();
+                optimizeTouchResponse();
+
+                await initIndexedDB();
+
+                if (!localStorage.getItem('secure_dashboard_users_v6')) {
+                    await restoreFromSupabase();
+                }
+
+                let savedUserId = getSecureItem(CURRENT_USER_KEY);
+                if (!savedUserId) {
+                    savedUserId = getSecureItem('dashboard_last_user');
+                }
+
+                console.log('Saved user ID from storage:', savedUserId);
+
+                if (savedUserId && loadUserData(savedUserId)) {
+                    currentUserID = savedUserId;
+                    console.log('✅ Loaded existing user:', currentUserID);
+                } else {
+                    console.log('No saved user, creating new');
+                    createNewUser();
+                }
+
+                const storedAvatar = await getImageFromDB('avatar');
+                if (storedAvatar && currentUserData.profile) {
+                    currentUserData.profile.avatar = storedAvatar;
+                }
+
+                const storedLogo = await getImageFromDB('logo');
+                if (storedLogo) {
+                    currentUserData.logo = storedLogo;
+                }
+
+                const dashboard = document.getElementById('dashboardContainer');
+                if (dashboard) {
+                    dashboard.classList.add('loaded');
+                }
+
+                setupEventListeners();
+                applyTheme();
+                applyUserData();
+                loadUserImages();
+                updateUI();
+                setupAutoSave();
+
+                logActivity(currentUserID, 'app_initialized');
+
+                startCloudBackup();
+                startMultiDeviceCheck();
+                setupRealtimeSubscription();
+
+                lastSyncTime = localStorage.getItem('last_supabase_sync');
+
+                loadFromSupabase().then(success => {
+                    if (success) {
+                        applyUserData();
+                        loadUserImages();
+                        console.log('✅ Loaded data from Supabase');
+                    }
+                });
+
+                if (!isProfileComplete()) {
+                    navigateToSection('profile', true);
+                    showStatus('Please complete your profile', 'warning');
+                } else {
+                    navigateToSection('profile', true);
+                }
+            }
+
+            function applyUserData() {
+                if (!currentUserData) return;
+
+                if (currentUserData.profile) {
+                    if (document.getElementById('idNumber')) document.getElementById('idNumber').value = currentUserData.profile.idNumber || '';
+                    if (document.getElementById('firstName')) document.getElementById('firstName').value = currentUserData.profile.firstName || '';
+                    if (document.getElementById('lastName')) document.getElementById('lastName').value = currentUserData.profile.lastName || '';
+                    if (document.getElementById('userEmail')) document.getElementById('userEmail').value = currentUserData.profile.userEmail || '';
+                    if (document.getElementById('userPhone')) document.getElementById('userPhone').value = currentUserData.profile.userPhone || '';
+                    if (document.getElementById('userBio')) document.getElementById('userBio').value = currentUserData.profile.userBio || '';
+                    if (document.getElementById('userLocation')) document.getElementById('userLocation').value = currentUserData.profile.userLocation || '';
+
+                    updateProfileDisplay();
+
+                    if (currentUserData.profile.avatar && document.getElementById('userAvatar')) {
+                        document.getElementById('userAvatar').src = currentUserData.profile.avatar;
+                    }
+                }
+
+                if (currentUserData.preferences) {
+                    if (document.getElementById('themeSelect')) document.getElementById('themeSelect').value = currentUserData.preferences.theme || 'light';
+                    if (document.getElementById('language')) document.getElementById('language').value = currentUserData.preferences.language || 'en-us';
+                    if (document.getElementById('dateFormat')) document.getElementById('dateFormat').value = currentUserData.preferences.dateFormat || 'mm/dd/yyyy';
+                    if (document.getElementById('timezone')) document.getElementById('timezone').value = currentUserData.preferences.timezone || 'est';
+                    if (document.getElementById('reduceMotion')) document.getElementById('reduceMotion').checked = currentUserData.preferences.reduceMotion || false;
+                    if (document.getElementById('fontSize')) {
+                        document.getElementById('fontSize').value = currentUserData.preferences.fontSize || 'medium';
+                        applyFontSize(currentUserData.preferences.fontSize);
+                    }
+                }
+
+                if (currentUserData.notifications) {
+                    if (document.getElementById('emailAlerts')) document.getElementById('emailAlerts').checked = currentUserData.notifications.emailAlerts !== false;
+                    if (document.getElementById('pushAlerts')) document.getElementById('pushAlerts').checked = currentUserData.notifications.pushAlerts !== false;
+                    if (document.getElementById('securityAlerts')) document.getElementById('securityAlerts').checked = currentUserData.notifications.securityAlerts !== false;
+                    if (document.getElementById('weeklyDigest')) document.getElementById('weeklyDigest').checked = currentUserData.notifications.weeklyDigest !== false;
+                }
+
+                if (currentUserData.account) {
+                    if (document.getElementById('accountVisibility')) document.getElementById('accountVisibility').value = currentUserData.account.accountVisibility || 'public';
+                    if (document.getElementById('dataRetention')) document.getElementById('dataRetention').value = currentUserData.account.dataRetention || '30';
+                }
+
+                if (currentUserData.logo && document.getElementById('logo')) {
+                    applyLogo(currentUserData.logo);
+                }
+            }
+
+            function applyFontSize(size) {
+                document.body.classList.remove('font-size-small', 'font-size-medium', 'font-size-large');
+                document.body.classList.add(`font-size-${size}`);
+
+                if (currentUserData.preferences) {
+                    currentUserData.preferences.fontSize = size;
+                }
+            }
+
+            function saveSettings() {
+                try {
+                    localStorage.setItem('dashboard_settings_v5', JSON.stringify(settings));
+                    return true;
+                } catch (e) {
+                    showStatus('Error saving settings', 'error');
+                    return false;
+                }
+            }
+
+            function showStatus(message, type = 'success') {
+                const statusEl = document.getElementById('statusMessage');
+                const statusText = document.getElementById('statusText');
+
+                if (!statusEl || !statusText) return;
+
+                clearTimeout(window.statusTimeout);
+
+                statusText.textContent = message;
+                statusEl.className = 'status-message';
+
+                if (type === 'error') {
+                    statusEl.classList.add('error');
+                    statusEl.querySelector('i').className = 'fas fa-exclamation-circle';
+                } else if (type === 'warning') {
+                    statusEl.classList.add('warning');
+                    statusEl.querySelector('i').className = 'fas fa-exclamation-triangle';
+                } else {
+                    statusEl.querySelector('i').className = 'fas fa-check-circle';
+                }
+
+                void statusEl.offsetWidth;
+                statusEl.classList.add('show');
+
+                window.statusTimeout = setTimeout(() => {
+                    statusEl.classList.remove('show');
+                }, 1500);
+            }
+
+            function updateProfileDisplay() {
+                if (!currentUserData || !currentUserData.profile) return;
+
+                const name = `${currentUserData.profile.firstName || ''} ${currentUserData.profile.lastName || ''}`.trim() || 'User Profile';
+                const userNameElement = document.getElementById('userName');
+                if (userNameElement) userNameElement.textContent = name;
+
+                const avatarElement = document.getElementById('userAvatar');
+                if (avatarElement && !currentUserData.profile.avatar && name !== 'User Profile') {
+                    avatarElement.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4361ee&color=fff&bold=true`;
+                }
+            }
+
+            function applyLogo(logoData) {
+                const logo = document.getElementById('logo');
+                const logoIcon = document.getElementById('logoIcon');
+
+                if (!logo || !logoIcon) return;
+
+                logoIcon.style.display = 'none';
+                logo.style.backgroundImage = `url(${logoData})`;
+                logo.style.backgroundSize = 'cover';
+                logo.style.backgroundPosition = 'center';
+                logo.style.backgroundRepeat = 'no-repeat';
+            }
+
+            function applyTheme() {
+                if (!currentUserData || !currentUserData.preferences) return;
+
+                const theme = currentUserData.preferences.theme || 'light';
+
+                document.body.classList.remove('theme-dark');
+
+                if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.body.classList.add('theme-dark');
+                    const themeToggle = document.getElementById('themeToggle');
+                    if (themeToggle) {
+                        themeToggle.classList.add('active');
+                        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    }
+                } else {
+                    const themeToggle = document.getElementById('themeToggle');
+                    if (themeToggle) {
+                        themeToggle.classList.remove('active');
+                        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    }
+                }
+            }
+
+            function toggleCompactMode() {
+                currentState.isCompact = !currentState.isCompact;
+                settings.compactMode = currentState.isCompact;
+
+                if (currentState.isCompact) {
+                    document.body.classList.add('compact-mode');
+                    showStatus('Compact mode enabled');
+                } else {
+                    document.body.classList.remove('compact-mode');
+                    showStatus('Compact mode disabled');
+                }
+
+                saveSettings();
+                logActivity(currentUserID, 'compact_mode_toggled', { enabled: currentState.isCompact });
+            }
+
+            function updateSyncStatus() {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const lastSyncElement = document.getElementById('lastSync');
+                if (lastSyncElement) {
+                    lastSyncElement.textContent = `Account Dashboard • Last sync: ${timeStr}`;
+                }
+            }
+
+            function updateUI() {
+                updateSyncStatus();
+            }
+
+            function setupNavigationDropdown() {
+                const dropdownBtn = document.getElementById('navDropdownBtn');
+                const dropdownContent = document.getElementById('navDropdownContent');
+
+                if (!dropdownBtn || !dropdownContent) return;
+
+                dropdownBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdownContent.classList.toggle('show');
+
+                    if ('vibrate' in navigator && currentState.isTouchDevice) {
+                        navigator.vibrate(30);
+                    }
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!dropdownBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                        dropdownContent.classList.remove('show');
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        dropdownContent.classList.remove('show');
+                    }
+                });
+            }
+
+            function saveSection(section) {
+                try {
+                    if (!currentUserData) {
+                        showStatus('User data not loaded', 'error');
+                        return;
+                    }
+
+                    if (!currentUserData[section]) {
+                        currentUserData[section] = {};
+                    }
+
+                    const inputs = document.querySelectorAll(`#${section} [data-save="${section}"]`);
+
+                    if (section === 'notifications' && inputs.length === 0) {
+                        const checkboxes = document.querySelectorAll(`#${section} input[type="checkbox"]`);
+
+                        if (!checkboxes.length) {
+                            showStatus(`No settings found for ${section} section`, 'error');
+                            return;
+                        }
+
+                        checkboxes.forEach(checkbox => {
+                            currentUserData[section][checkbox.id] = checkbox.checked;
+                        });
+
+                        if (saveCurrentUserData()) {
+                            showStatus(`${section.charAt(0).toUpperCase() + section.slice(1)} settings saved automatically`);
+                            logActivity(currentUserID, 'section_saved', { section: section });
+
+                            triggerAutoSync();
+                        }
+                        return;
+                    }
+
+                    if (!inputs.length) {
+                        showStatus(`No settings found for ${section} section`, 'error');
+                        return;
+                    }
+
+                    inputs.forEach(input => {
+                        const value = input.type === 'checkbox' ? input.checked : input.value;
+                        currentUserData[section][input.id] = value;
+                    });
+
+                    if (section === 'preferences') {
+                        const fontSize = currentUserData.preferences.fontSize;
+                        if (fontSize) applyFontSize(fontSize);
+                        applyTheme();
+                    }
+
+                    if (section === 'profile') updateProfileDisplay();
+
+                    if (saveCurrentUserData()) {
+                        showStatus(`${section.charAt(0).toUpperCase() + section.slice(1)} settings saved automatically`);
+                        logActivity(currentUserID, 'section_saved', { section: section });
+
+                        triggerAutoSync();
+
+                        if (section === 'profile') {
+                            checkProfileAndRedirect();
+                        }
+                    }
+                } catch (error) {
+                    showStatus('Error saving settings. Please try again.', 'error');
+                }
+            }
+
+            function saveProfileAndContinue() {
+                const idNumber = document.getElementById('idNumber')?.value;
+                const firstName = document.getElementById('firstName')?.value;
+                const lastName = document.getElementById('lastName')?.value;
+                const userEmail = document.getElementById('userEmail')?.value;
+
+                if (!idNumber || !firstName || !lastName || !userEmail) {
+                    showStatus('Please fill in all required fields (ID Number, First Name, Last Name, Email)', 'error');
+                    return;
+                }
+
+                if (!currentUserData.profile) {
+                    currentUserData.profile = {};
+                }
+
+                currentUserData.profile.idNumber = idNumber;
+                currentUserData.profile.firstName = firstName;
+                currentUserData.profile.lastName = lastName;
+                currentUserData.profile.userEmail = userEmail;
+                currentUserData.profile.userPhone = document.getElementById('userPhone')?.value || '';
+                currentUserData.profile.userBio = document.getElementById('userBio')?.value || '';
+                currentUserData.profile.userLocation = document.getElementById('userLocation')?.value || '';
+
+                if (saveCurrentUserData()) {
+                    updateProfileDisplay();
+                    showStatus('Profile saved successfully!');
+                    logActivity(currentUserID, 'profile_completed');
+
+                    triggerAutoSync();
+
+                    currentState.profileComplete = true;
+                    const profileWarning = document.getElementById('profileWarning');
+                    if (profileWarning) {
+                        profileWarning.style.display = 'none';
+                    }
+
+                    navigateToSection('preferences', true);
+                }
+            }
+
+            function exportData(format) {
+                if (!currentUserData) return;
+
+                if (!isProfileComplete()) {
+                    showStatus('Please complete your profile first', 'warning');
+                    return;
+                }
+
+                const exportData = { ...currentUserData };
+
+                const data = format === 'json'
+                    ? JSON.stringify(exportData, null, 2)
+                    : Object.entries(exportData).map(([section, values]) => {
+                        return Object.entries(values).map(([key, value]) => `${section}.${key},${value}`).join('\n');
+                    }).join('\n\n');
+
+                const blob = new Blob([data], { type: format === 'json' ? 'application/json' : 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `dashboard-export-${new Date().toISOString().split('T')[0]}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus(`Exported as ${format.toUpperCase()}`);
+                logActivity(currentUserID, 'data_exported', { format: format });
+            }
+
+            function deleteAccount() {
+                if (!isProfileComplete()) {
+                    showStatus('Please complete your profile first', 'warning');
+                    return;
+                }
+
+                if (confirm('Are you sure you want to delete your account? This action cannot be undone and all data will be permanently lost.')) {
+                    const users = getAllUsers();
+                    logActivity(currentUserID, 'account_deleted');
+                    delete users[currentUserID];
+                    saveAllUsers(users);
+
+                    removeSecureItem(CURRENT_USER_KEY);
+                    removeSecureItem('dashboard_last_user');
+
+                    if (db) {
+                        db.close();
+                    }
+
+                    showStatus('Account deleted. Refreshing...', 'warning');
+                    setTimeout(() => location.reload(), 1500);
+                }
+            }
+
+            function resetPreferences() {
+                if (!isProfileComplete()) {
+                    showStatus('Please complete your profile first', 'warning');
+                    return;
+                }
+
+                if (confirm('Reset all preferences to default values?')) {
+                    currentUserData.preferences = {
+                        theme: 'light',
+                        language: 'en-us',
+                        dateFormat: 'mm/dd/yyyy',
+                        timezone: 'est',
+                        reduceMotion: false,
+                        timeFormat: false,
+                        fontSize: 'medium'
+                    };
+
+                    applyUserData();
+                    applyTheme();
+                    applyFontSize('medium');
+                    if (saveCurrentUserData()) {
+                        showStatus('Preferences reset');
+                        logActivity(currentUserID, 'preferences_reset');
+                    }
+                }
+            }
+
+            function selectAllNotifications() {
+                if (!isProfileComplete()) {
+                    showStatus('Please complete your profile first', 'warning');
+                    return;
+                }
+
+                const checkboxes = document.querySelectorAll('#notifications input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                showStatus('All notifications selected');
+            }
+
+            function scrollToTop() {
+                const contentScroll = document.querySelector('.content-scroll');
+                if (contentScroll) {
+                    contentScroll.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            function navigateToSection(sectionId, skipProfileCheck = false) {
+                if (!skipProfileCheck && !isProfileComplete() && sectionId !== 'profile') {
+                    showStatus('Please complete your profile first', 'warning');
+                    return;
+                }
+
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                document.querySelectorAll(`.nav-item[data-section="${sectionId}"]`).forEach(item => item.classList.add('active'));
+
+                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) targetSection.classList.add('active');
+
+                currentState.activeSection = sectionId;
+                scrollToTop();
+
+                if ('vibrate' in navigator && currentState.isTouchDevice) {
+                    navigator.vibrate(30);
+                }
+
+                logActivity(currentUserID, 'navigation', { section: sectionId });
+            }
+
+            function setupAutoSave() {
+                let saveTimeout;
+                document.querySelectorAll('[data-save]').forEach(el => {
+                    el.addEventListener('change', () => {
+                        clearTimeout(saveTimeout);
+                        saveTimeout = setTimeout(() => {
+                            const section = el.dataset.save;
+                            saveSection(section);
+                        }, 1000);
+                    });
+                });
+            }
+
+            function showCropModal(imageData) {
+                const modal = document.getElementById('cropModal');
+                if (!modal) return;
+
+                cropState.image = imageData;
+                cropState.scale = 1;
+                cropState.offsetX = 0;
+                cropState.offsetY = 0;
+                cropState.selection = { x: 50, y: 50, width: 150, height: 150 };
+
+                const cropImage = document.getElementById('cropImage');
+                if (cropImage) {
+                    cropImage.src = imageData;
+                    cropImage.onload = () => {
+                        setupCropArea();
+                    };
+                }
+
+                modal.classList.add('active');
+            }
+
+            function hideCropModal() {
+                const modal = document.getElementById('cropModal');
+                if (modal) modal.classList.remove('active');
+            }
+
+            function setupCropArea() {
+                const cropArea = document.getElementById('cropArea');
+                const cropImage = document.getElementById('cropImage');
+                const cropSelection = document.getElementById('cropSelection');
+
+                if (!cropArea || !cropImage || !cropSelection) return;
+
+                cropState.containerWidth = cropArea.clientWidth;
+                cropState.containerHeight = cropArea.clientHeight;
+                cropState.imageWidth = cropImage.naturalWidth;
+                cropState.imageHeight = cropImage.naturalHeight;
+
+                const imageAspect = cropState.imageWidth / cropState.imageHeight;
+                const containerAspect = cropState.containerWidth / cropState.containerHeight;
+
+                if (imageAspect > containerAspect) {
+                    cropState.scale = cropState.containerHeight / cropState.imageHeight;
+                } else {
+                    cropState.scale = cropState.containerWidth / cropState.imageWidth;
+                }
+
+                updateCropSelectionDisplay();
+                setupCropInteraction();
+            }
+
+            function updateCropSelectionDisplay() {
+                const cropSelection = document.getElementById('cropSelection');
+                if (!cropSelection) return;
+
+                const selection = cropState.selection;
+                cropSelection.style.left = selection.x + 'px';
+                cropSelection.style.top = selection.y + 'px';
+                cropSelection.style.width = selection.width + 'px';
+                cropSelection.style.height = selection.height + 'px';
+            }
+
+            function setupCropInteraction() {
+                const cropArea = document.getElementById('cropArea');
+                const cropSelection = document.getElementById('cropSelection');
+                const handles = document.querySelectorAll('.crop-handle');
+
+                if (!cropArea || !cropSelection) return;
+
+                const pointerOptions = { passive: false };
+
+                cropArea.addEventListener('mousedown', startDrawing);
+                cropArea.addEventListener('touchstart', startDrawing, pointerOptions);
+
+                cropSelection.addEventListener('mousedown', startDragging);
+                cropSelection.addEventListener('touchstart', startDragging, pointerOptions);
+
+                handles.forEach(handle => {
+                    handle.addEventListener('mousedown', startResizing);
+                    handle.addEventListener('touchstart', startResizing, pointerOptions);
+                });
+
+                function startDrawing(e) {
+                    e.preventDefault();
+                    const rect = cropArea.getBoundingClientRect();
+                    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+                    if (!isPointInsideSelection(x, y)) {
+                        cropState.isDragging = false;
+                        cropState.isResizing = false;
+                        cropState.selection = { x: x, y: y, width: 0, height: 0 };
+                        cropState.startX = x;
+                        cropState.startY = y;
+
+                        document.addEventListener('mousemove', drawSelection);
+                        document.addEventListener('touchmove', drawSelection, pointerOptions);
+                        document.addEventListener('mouseup', stopDrawing);
+                        document.addEventListener('touchend', stopDrawing);
+                    }
+                }
+
+                function drawSelection(e) {
+                    e.preventDefault();
+                    const rect = cropArea.getBoundingClientRect();
+                    const currentX = (e.clientX || e.touches[0].clientX) - rect.left;
+                    const currentY = (e.clientY || e.touches[0].clientY) - rect.top;
+
+                    const width = Math.abs(currentX - cropState.startX);
+                    const height = Math.abs(currentY - cropState.startY);
+                    const x = Math.min(currentX, cropState.startX);
+                    const y = Math.min(currentY, cropState.startY);
+
+                    const maxWidth = cropArea.clientWidth - x;
+                    const maxHeight = cropArea.clientHeight - y;
+
+                    cropState.selection = {
+                        x: Math.max(0, x),
+                        y: Math.max(0, y),
+                        width: Math.min(width, maxWidth),
+                        height: Math.min(height, maxHeight)
+                    };
+
+                    updateCropSelectionDisplay();
+                }
+
+                function stopDrawing() {
+                    document.removeEventListener('mousemove', drawSelection);
+                    document.removeEventListener('touchmove', drawSelection);
+                    document.removeEventListener('mouseup', stopDrawing);
+                    document.removeEventListener('touchend', stopDrawing);
+
+                    if (cropState.selection.width < 10 || cropState.selection.height < 10) {
+                        cropState.selection = { x: 50, y: 50, width: 150, height: 150 };
+                        updateCropSelectionDisplay();
+                    }
+                }
+
+                function startDragging(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    cropState.isDragging = true;
+                    cropState.isResizing = false;
+                    const rect = cropArea.getBoundingClientRect();
+                    cropState.startX = (e.clientX || e.touches[0].clientX) - rect.left;
+                    cropState.startY = (e.clientY || e.touches[0].clientY) - rect.top;
+                    cropState.startSelection = { ...cropState.selection };
+
+                    document.addEventListener('mousemove', dragSelection);
+                    document.addEventListener('touchmove', dragSelection, pointerOptions);
+                    document.addEventListener('mouseup', stopDragging);
+                    document.addEventListener('touchend', stopDragging);
+                }
+
+                function dragSelection(e) {
+                    e.preventDefault();
+                    const rect = cropArea.getBoundingClientRect();
+                    const currentX = (e.clientX || e.touches[0].clientX) - rect.left;
+                    const currentY = (e.clientY || e.touches[0].clientY) - rect.top;
+
+                    const dx = currentX - cropState.startX;
+                    const dy = currentY - cropState.startY;
+
+                    const newX = cropState.startSelection.x + dx;
+                    const newY = cropState.startSelection.y + dy;
+
+                    const maxX = cropArea.clientWidth - cropState.selection.width;
+                    const maxY = cropArea.clientHeight - cropState.selection.height;
+
+                    cropState.selection.x = Math.max(0, Math.min(newX, maxX));
+                    cropState.selection.y = Math.max(0, Math.min(newY, maxY));
+
+                    updateCropSelectionDisplay();
+                }
+
+                function stopDragging() {
+                    document.removeEventListener('mousemove', dragSelection);
+                    document.removeEventListener('touchmove', dragSelection);
+                    document.removeEventListener('mouseup', stopDragging);
+                    document.removeEventListener('touchend', stopDragging);
+
+                    cropState.isDragging = false;
+                }
+
+                function startResizing(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    cropState.isResizing = true;
+                    cropState.isDragging = false;
+                    cropState.resizeHandle = e.target.className.split(' ')[1].split('-')[2];
+                    const rect = cropArea.getBoundingClientRect();
+                    cropState.startX = (e.clientX || e.touches[0].clientX) - rect.left;
+                    cropState.startY = (e.clientY || e.touches[0].clientY) - rect.top;
+                    cropState.startSelection = { ...cropState.selection };
+
+                    document.addEventListener('mousemove', resizeSelection);
+                    document.addEventListener('touchmove', resizeSelection, pointerOptions);
+                    document.addEventListener('mouseup', stopResizing);
+                    document.addEventListener('touchend', stopResizing);
+                }
+
+                function resizeSelection(e) {
+                    e.preventDefault();
+                    const rect = cropArea.getBoundingClientRect();
+                    const currentX = (e.clientX || e.touches[0].clientX) - rect.left;
+                    const currentY = (e.clientY || e.touches[0].clientY) - rect.top;
+
+                    const dx = currentX - cropState.startX;
+                    const dy = currentY - cropState.startY;
+
+                    let newSelection = { ...cropState.startSelection };
+
+                    switch (cropState.resizeHandle) {
+                        case 'nw':
+                            newSelection.x = Math.max(0, newSelection.x + dx);
+                            newSelection.y = Math.max(0, newSelection.y + dy);
+                            newSelection.width = Math.max(10, newSelection.width - dx);
+                            newSelection.height = Math.max(10, newSelection.height - dy);
+                            break;
+                        case 'ne':
+                            newSelection.y = Math.max(0, newSelection.y + dy);
+                            newSelection.width = Math.max(10, newSelection.width + dx);
+                            newSelection.height = Math.max(10, newSelection.height - dy);
+                            break;
+                        case 'sw':
+                            newSelection.x = Math.max(0, newSelection.x + dx);
+                            newSelection.width = Math.max(10, newSelection.width - dx);
+                            newSelection.height = Math.max(10, newSelection.height + dy);
+                            break;
+                        case 'se':
+                            newSelection.width = Math.max(10, newSelection.width + dx);
+                            newSelection.height = Math.max(10, newSelection.height + dy);
+                            break;
+                    }
+
+                    const maxX = cropArea.clientWidth - newSelection.x;
+                    const maxY = cropArea.clientHeight - newSelection.y;
+
+                    newSelection.width = Math.min(newSelection.width, maxX);
+                    newSelection.height = Math.min(newSelection.height, maxY);
+
+                    cropState.selection = newSelection;
+                    updateCropSelectionDisplay();
+                }
+
+                function stopResizing() {
+                    document.removeEventListener('mousemove', resizeSelection);
+                    document.removeEventListener('touchmove', resizeSelection);
+                    document.removeEventListener('mouseup', stopResizing);
+                    document.removeEventListener('touchend', stopResizing);
+
+                    cropState.isResizing = false;
+                }
+
+                function isPointInsideSelection(x, y) {
+                    const s = cropState.selection;
+                    return x >= s.x && x <= s.x + s.width && y >= s.y && y <= s.y + s.height;
+                }
+            }
+
+            async function applyCroppedImage() {
+                if (!cropState.image || !currentUserData) return;
+
+                try {
+                    showStatus('📤 Processing image...', 'info');
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+
+                    img.onload = async function () {
+                        const imgWidth = img.width;
+                        const imgHeight = img.height;
+
+                        const scaleX = imgWidth / cropState.containerWidth;
+                        const scaleY = imgHeight / cropState.containerHeight;
+
+                        const selection = cropState.selection;
+                        const cropX = selection.x * scaleX;
+                        const cropY = selection.y * scaleY;
+                        const cropWidth = selection.width * scaleX;
+                        const cropHeight = selection.height * scaleY;
+
+                        const outputSize = 300;
+                        const aspect = cropWidth / cropHeight;
+
+                        if (aspect > 1) {
+                            canvas.width = outputSize;
+                            canvas.height = outputSize / aspect;
+                        } else {
+                            canvas.width = outputSize * aspect;
+                            canvas.height = outputSize;
+                        }
+
+                        ctx.drawImage(img, cropX, cropY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
+
+                        canvas.toBlob(async (blob) => {
+                            try {
+                                const file = new File([blob], `logo-${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+                                const publicUrl = await uploadImage(file, 'logos');
+
+                                if (publicUrl) {
+                                    currentUserData.logo = publicUrl;
+                                    if (!currentUserData.profile) currentUserData.profile = {};
+                                    currentUserData.profile.avatar = publicUrl;
+
+                                    await Promise.all([
+                                        saveImageToDB('logo', publicUrl),
+                                        saveImageToDB('avatar', publicUrl)
+                                    ]);
+
+                                    applyLogo(publicUrl);
+                                    const userAvatar = document.getElementById('userAvatar');
+                                    if (userAvatar) {
+                                        userAvatar.src = publicUrl;
+                                    }
+
+                                    if (saveCurrentUserData()) {
+                                        showStatus('✅ Logo and avatar uploaded to cloud!');
+                                        hideCropModal();
+                                        logActivity(currentUserID, 'image_uploaded');
+
+                                        const logo = document.getElementById('logo');
+                                        if (logo) {
+                                            logo.style.transform = 'scale(1.1)';
+                                            setTimeout(() => {
+                                                logo.style.transform = 'scale(1)';
+                                            }, 150);
+                                        }
+
+                                        const avatar = document.getElementById('userAvatar');
+                                        if (avatar) {
+                                            avatar.style.transform = 'scale(1.1)';
+                                            setTimeout(() => {
+                                                avatar.style.transform = 'scale(1)';
+                                            }, 150);
+                                        }
+
+                                        triggerAutoSync();
+                                    }
+                                } else {
+                                    const croppedImageData = canvas.toDataURL('image/jpeg', 0.9);
+
+                                    currentUserData.logo = croppedImageData;
+                                    currentUserData.profile.avatar = croppedImageData;
+
+                                    await Promise.all([
+                                        saveImageToDB('logo', croppedImageData),
+                                        saveImageToDB('avatar', croppedImageData)
+                                    ]);
+
+                                    applyLogo(croppedImageData);
+                                    const userAvatar = document.getElementById('userAvatar');
+                                    if (userAvatar) {
+                                        userAvatar.src = croppedImageData;
+                                    }
+
+                                    if (saveCurrentUserData()) {
+                                        showStatus('⚠️ Cloud upload failed, saved locally', 'warning');
+                                        hideCropModal();
+                                        logActivity(currentUserID, 'image_cropped_local');
+                                    }
+                                }
+                            } catch (error) {
+                                showStatus('❌ Upload failed', 'error');
+                                console.error('Upload error:', error);
+                                hideCropModal();
+                            }
+                        }, 'image/jpeg', 0.9);
+                    };
+
+                    img.src = cropState.image;
+                } catch (error) {
+                    showStatus('Error processing image', 'error');
+                    hideCropModal();
+                }
+            }
+
+            function showDevModal() {
+                const modal = document.getElementById('devModal');
+                if (modal) {
+                    modal.classList.add('active');
+                    document.getElementById('devLoginSection').style.display = 'block';
+                    document.getElementById('devControlSection').style.display = 'none';
+                    document.getElementById('devMasterPassword').value = '';
+                    logActivity(currentUserID, 'dev_modal_opened');
+                }
+            }
+
+            function hideDevModal() {
+                const modal = document.getElementById('devModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    currentState.isDevMode = false;
+                }
+            }
+
+            function handleDevLogin() {
+                const password = document.getElementById('devMasterPassword').value;
+                if (password === DEV_MASTER_PASSWORD) {
+                    document.getElementById('devLoginSection').style.display = 'none';
+                    document.getElementById('devControlSection').style.display = 'block';
+                    currentState.isDevMode = true;
+                    loadDevUserList();
+                    updateDevStats();
+                    logActivity('system', 'dev_login_success');
+                } else {
+                    showStatus('Invalid master password', 'error');
+                    logActivity('system', 'dev_login_failed');
+                }
+            }
+
+            function loadDevUserList() {
+                const users = getAllUsers();
+                const userList = document.getElementById('devUserList');
+                const activities = getActivityLog();
+
+                if (!userList) return;
+
+                userList.innerHTML = '';
+
+                Object.keys(users).forEach(userId => {
+                    const user = users[userId];
+                    const userActivities = activities.filter(a => a.userId === userId);
+                    const lastActive = userActivities.length > 0 ? new Date(userActivities[0].timestamp) : new Date(user.lastActive || user.created);
+
+                    const userItem = document.createElement('div');
+                    userItem.className = `dev-user-item ${currentState.selectedDevUser === userId ? 'selected' : ''}`;
+                    userItem.innerHTML = `
+                        <div>
+                            <div><strong>${user.profile?.firstName || 'Unknown'} ${user.profile?.lastName || ''}</strong></div>
+                            <div class="dev-user-id">${userId}</div>
+                        </div>
+                        <div>
+                            <span class="dev-badge">${userActivities.length} activities</span>
+                            <div class="dev-activity-time">${lastActive.toLocaleString()}</div>
+                        </div>
+                    `;
+
+                    userItem.addEventListener('click', () => {
+                        selectDevUser(userId);
+                    });
+
+                    userList.appendChild(userItem);
+                });
+
+                document.getElementById('totalUsersStat').textContent = Object.keys(users).length;
+            }
+
+            function updateDevStats() {
+                const users = getAllUsers();
+                const activities = getActivityLog();
+
+                const today = new Date().toDateString();
+                const activeToday = activities.filter(a => new Date(a.timestamp).toDateString() === today).length;
+
+                const lockedAccounts = 0;
+
+                document.getElementById('activeTodayStat').textContent = activeToday;
+                document.getElementById('totalActivitiesStat').textContent = activities.length;
+                document.getElementById('lockedAccountsStat').textContent = lockedAccounts;
+            }
+
+            function selectDevUser(userId) {
+                currentState.selectedDevUser = userId;
+                const users = getAllUsers();
+                const user = users[userId];
+
+                if (!user) return;
+
+                document.getElementById('selectedUserId').textContent = userId;
+                document.getElementById('devUserData').value = JSON.stringify(user, null, 2);
+                document.getElementById('devEditUserData').value = JSON.stringify(user, null, 2);
+
+                const activities = getActivityLog(userId);
+                const activityLog = document.getElementById('devActivityLog');
+                activityLog.innerHTML = '';
+
+                activities.slice(0, 50).forEach(activity => {
+                    const item = document.createElement('div');
+                    item.className = 'dev-activity-item';
+                    item.innerHTML = `
+                        <div class="dev-activity-time">${new Date(activity.timestamp).toLocaleString()}</div>
+                        <div><strong>${activity.action}</strong></div>
+                        <div class="dev-activity-time">${JSON.stringify(activity.details)}</div>
+                        <div class="dev-activity-time">${activity.userAgent?.substring(0, 50)}...</div>
+                    `;
+                    activityLog.appendChild(item);
+                });
+
+                document.getElementById('devUserDetails').style.display = 'block';
+
+                document.querySelectorAll('.dev-user-item').forEach(item => {
+                    item.classList.remove('selected');
+                    if (item.querySelector('.dev-user-id')?.textContent === userId) {
+                        item.classList.add('selected');
+                    }
+                });
+            }
+
+            function handleDevImpersonate() {
+                if (!currentState.selectedDevUser) return;
+
+                currentUserID = currentState.selectedDevUser;
+                localStorage.setItem(CURRENT_USER_KEY, currentUserID);
+                setSecureItem(CURRENT_USER_KEY, currentUserID);
+                setSecureItem('dashboard_last_user', currentUserID);
+
+                loadUserData(currentUserID);
+
+                applyUserData();
+                applyTheme();
+                updateUI();
+
+                hideDevModal();
+                showStatus(`Impersonating user: ${currentState.selectedDevUser}`);
+                logActivity('system', 'dev_impersonate', { targetUser: currentState.selectedDevUser });
+            }
+
+            function handleDevExportUser() {
+                if (!currentState.selectedDevUser) return;
+
+                const users = getAllUsers();
+                const user = users[currentState.selectedDevUser];
+                const activities = getActivityLog(currentState.selectedDevUser);
+
+                const exportData = {
+                    user: user,
+                    activities: activities
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `user-${currentState.selectedDevUser}-export.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus('User data exported');
+                logActivity('system', 'dev_export_user', { targetUser: currentState.selectedDevUser });
+            }
+
+            function handleDevDeleteUser() {
+                if (!currentState.selectedDevUser) return;
+
+                if (confirm(`Are you sure you want to delete user ${currentState.selectedDevUser}? This cannot be undone.`)) {
+                    const users = getAllUsers();
+                    logActivity('system', 'dev_delete_user', { targetUser: currentState.selectedDevUser });
+                    delete users[currentState.selectedDevUser];
+                    saveAllUsers(users);
+
+                    if (currentState.selectedDevUser === currentUserID) {
+                        removeSecureItem(CURRENT_USER_KEY);
+                        removeSecureItem('dashboard_last_user');
+
+                        showStatus('Current user deleted. Refreshing...', 'warning');
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        loadDevUserList();
+                        document.getElementById('devUserDetails').style.display = 'none';
+                        currentState.selectedDevUser = null;
+                        showStatus('User deleted');
+                    }
+                }
+            }
+
+            function handleDevSaveUserData() {
+                if (!currentState.selectedDevUser) return;
+
+                try {
+                    const newData = JSON.parse(document.getElementById('devEditUserData').value);
+                    const users = getAllUsers();
+                    users[currentState.selectedDevUser] = newData;
+                    saveAllUsers(users);
+
+                    if (currentState.selectedDevUser === currentUserID) {
+                        currentUserData = newData;
+                        applyUserData();
+                    }
+
+                    document.getElementById('devUserData').value = JSON.stringify(newData, null, 2);
+                    showStatus('User data saved');
+                    logActivity('system', 'dev_save_user_data', { targetUser: currentState.selectedDevUser });
+                } catch (e) {
+                    showStatus('Invalid JSON data', 'error');
+                }
+            }
+
+            function handleDevExportAll() {
+                const users = getAllUsers();
+                const activities = getActivityLog();
+
+                const exportData = {
+                    users: users,
+                    activities: activities,
+                    exportDate: new Date().toISOString()
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `full-system-export-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus('All data exported');
+                logActivity('system', 'dev_export_all');
+            }
+
+            function handleDevLogout() {
+                currentState.isDevMode = false;
+                document.getElementById('devLoginSection').style.display = 'block';
+                document.getElementById('devControlSection').style.display = 'none';
+                document.getElementById('devMasterPassword').value = '';
+                document.getElementById('devUserDetails').style.display = 'none';
+                currentState.selectedDevUser = null;
+                logActivity('system', 'dev_logout');
+            }
+
+            function setupEventListeners() {
+                setupNavigationDropdown();
+
+                // Add exit button listener
+                const exitBtn = document.getElementById('exitBtn');
+                if (exitBtn) {
+                    exitBtn.addEventListener('click', exitApplication);
+                }
+
+                let keySequence = '';
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                        e.preventDefault();
+                        showDevModal();
+                        keySequence = '';
+                    }
+
+                    keySequence += e.key;
+                    if (keySequence.length > 10) {
+                        keySequence = keySequence.slice(-10);
+                    }
+                });
+
+                const supabaseSyncBtn = document.getElementById('supabaseSyncBtn');
+                if (supabaseSyncBtn) {
+                    supabaseSyncBtn.addEventListener('click', async () => {
+                        await syncToSupabase(false);
+                    });
+                }
+
+                const compactBtn = document.getElementById('compactBtn');
+                if (compactBtn) {
+                    compactBtn.addEventListener('click', toggleCompactMode);
+                }
+
+                const maximizeBtn = document.getElementById('maximizeBtn');
+                if (maximizeBtn) {
+                    maximizeBtn.addEventListener('click', () => {
+                        if (!document.fullscreenElement) {
+                            document.documentElement.requestFullscreen();
+                            showStatus('Fullscreen enabled');
+                        } else {
+                            document.exitFullscreen();
+                            showStatus('Fullscreen disabled');
+                        }
+                    });
+                }
+
+                const themeToggle = document.getElementById('themeToggle');
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', () => {
+                        const isDark = document.body.classList.contains('theme-dark');
+                        const newTheme = isDark ? 'light' : 'dark';
+
+                        const themeSelect = document.getElementById('themeSelect');
+                        if (themeSelect) themeSelect.value = newTheme;
+
+                        if (!currentUserData.preferences) currentUserData.preferences = {};
+                        currentUserData.preferences.theme = newTheme;
+
+                        applyTheme();
+                        saveSection('preferences');
+
+                        if ('vibrate' in navigator && currentState.isTouchDevice) {
+                            navigator.vibrate(30);
+                        }
+                    });
+                }
+
+                const themeSelect = document.getElementById('themeSelect');
+                if (themeSelect) {
+                    themeSelect.addEventListener('change', function () {
+                        if (!currentUserData.preferences) currentUserData.preferences = {};
+                        currentUserData.preferences.theme = this.value;
+                        applyTheme();
+                        saveSection('preferences');
+                    });
+                }
+
+                const fontSizeSelect = document.getElementById('fontSize');
+                if (fontSizeSelect) {
+                    fontSizeSelect.addEventListener('change', function () {
+                        applyFontSize(this.value);
+                        saveSection('preferences');
+                    });
+                }
+
+                const closeCropModal = document.getElementById('closeCropModal');
+                if (closeCropModal) {
+                    closeCropModal.addEventListener('click', hideCropModal);
+                }
+
+                const cancelCrop = document.getElementById('cancelCrop');
+                if (cancelCrop) {
+                    cancelCrop.addEventListener('click', hideCropModal);
+                }
+
+                const applyCrop = document.getElementById('applyCrop');
+                if (applyCrop) {
+                    applyCrop.addEventListener('click', applyCroppedImage);
+                }
+
+                const closeDevModal = document.getElementById('closeDevModal');
+                if (closeDevModal) {
+                    closeDevModal.addEventListener('click', hideDevModal);
+                }
+
+                const devLoginBtn = document.getElementById('devLoginBtn');
+                if (devLoginBtn) {
+                    devLoginBtn.addEventListener('click', handleDevLogin);
+                }
+
+                const devImpersonateBtn = document.getElementById('devImpersonateBtn');
+                if (devImpersonateBtn) {
+                    devImpersonateBtn.addEventListener('click', handleDevImpersonate);
+                }
+
+                const devExportUserBtn = document.getElementById('devExportUserBtn');
+                if (devExportUserBtn) {
+                    devExportUserBtn.addEventListener('click', handleDevExportUser);
+                }
+
+                const devDeleteUserBtn = document.getElementById('devDeleteUserBtn');
+                if (devDeleteUserBtn) {
+                    devDeleteUserBtn.addEventListener('click', handleDevDeleteUser);
+                }
+
+                const devSaveUserData = document.getElementById('devSaveUserData');
+                if (devSaveUserData) {
+                    devSaveUserData.addEventListener('click', handleDevSaveUserData);
+                }
+
+                const devExportAllBtn = document.getElementById('devExportAllBtn');
+                if (devExportAllBtn) {
+                    devExportAllBtn.addEventListener('click', handleDevExportAll);
+                }
+
+                const devLogoutBtn = document.getElementById('devLogoutBtn');
+                if (devLogoutBtn) {
+                    devLogoutBtn.addEventListener('click', handleDevLogout);
+                }
+
+                const logoUpload = document.getElementById('logoUpload');
+                if (logoUpload) {
+                    logoUpload.addEventListener('change', function (e) {
+                        const file = e.target.files[0];
+                        if (file && file.type.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function (event) {
+                                showCropModal(event.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            showStatus('Please select a valid image file', 'error');
+                        }
+                    });
+                }
+
+                const logo = document.getElementById('logo');
+                if (logo) {
+                    logo.addEventListener('click', function (e) {
+                        if (e.target !== document.getElementById('logoUpload')) {
+                            const logoUpload = document.getElementById('logoUpload');
+                            if (logoUpload) logoUpload.click();
+                        }
+                    });
+                }
+
+                const avatarUpload = document.getElementById('avatarUpload');
+                if (avatarUpload) {
+                    avatarUpload.addEventListener('change', async function (e) {
+                        const file = e.target.files[0];
+                        if (file && file.type.startsWith('image/')) {
+                            try {
+                                showStatus('📤 Uploading to cloud...', 'info');
+
+                                const publicUrl = await uploadImage(file, 'avatars');
+
+                                if (publicUrl) {
+                                    if (!currentUserData.profile) currentUserData.profile = {};
+                                    currentUserData.profile.avatar = publicUrl;
+
+                                    await saveImageToDB('avatar', publicUrl);
+
+                                    const userAvatar = document.getElementById('userAvatar');
+                                    if (userAvatar) userAvatar.src = publicUrl;
+
+                                    if (saveCurrentUserData()) {
+                                        showStatus('✅ Avatar uploaded to cloud!');
+
+                                        const avatar = document.getElementById('userAvatar');
+                                        if (avatar) {
+                                            avatar.style.transform = 'scale(1.1)';
+                                            setTimeout(() => {
+                                                avatar.style.transform = 'scale(1)';
+                                            }, 150);
+                                        }
+
+                                        triggerAutoSync();
+                                    }
+                                } else {
+                                    const reader = new FileReader();
+                                    reader.onload = async function (event) {
+                                        if (!currentUserData.profile) currentUserData.profile = {};
+                                        currentUserData.profile.avatar = event.target.result;
+
+                                        await saveImageToDB('avatar', event.target.result);
+
+                                        const userAvatar = document.getElementById('userAvatar');
+                                        if (userAvatar) userAvatar.src = event.target.result;
+                                        if (saveCurrentUserData()) {
+                                            showStatus('⚠️ Cloud upload failed, saved locally', 'warning');
+
+                                            const avatar = document.getElementById('userAvatar');
+                                            if (avatar) {
+                                                avatar.style.transform = 'scale(1.1)';
+                                                setTimeout(() => {
+                                                    avatar.style.transform = 'scale(1)';
+                                                }, 150);
+                                            }
+                                        }
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            } catch (error) {
+                                showStatus('❌ Upload failed', 'error');
+                                console.error('Upload error:', error);
+                            }
+                        }
+                    });
+                }
+
+                document.querySelectorAll('.nav-item').forEach(navItem => {
+                    navItem.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const sectionId = this.dataset.section;
+                        navigateToSection(sectionId);
+                    });
+                });
+
+                window.addEventListener('online', () => {
+                    currentState.isOnline = true;
+                    const syncText = document.getElementById('syncText');
+                    if (syncText) syncText.textContent = 'Synced';
+                    const statusDot = document.querySelector('.status-dot');
+                    if (statusDot) statusDot.className = 'status-dot';
+                    showStatus('Back online');
+                });
+
+                window.addEventListener('offline', () => {
+                    currentState.isOnline = false;
+                    const syncText = document.getElementById('syncText');
+                    if (syncText) syncText.textContent = 'Offline';
+                    const statusDot = document.querySelector('.status-dot');
+                    if (statusDot) statusDot.className = 'status-dot offline';
+                    showStatus('Offline mode', 'warning');
+                });
+
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (currentUserData.preferences?.theme === 'auto') {
+                        applyTheme();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        saveSection(currentState.activeSection);
+                    }
+
+                    if (e.key === 'Escape') {
+                        if (document.getElementById('cropModal')?.classList.contains('active')) {
+                            hideCropModal();
+                        } else if (document.getElementById('devModal')?.classList.contains('active')) {
+                            hideDevModal();
+                        }
+                        const navDropdownContent = document.getElementById('navDropdownContent');
+                        if (navDropdownContent) navDropdownContent.classList.remove('show');
+                    }
+
+                    if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+                        e.preventDefault();
+                        const themeToggle = document.getElementById('themeToggle');
+                        if (themeToggle) themeToggle.click();
+                    }
+
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                        e.preventDefault();
+                        toggleCompactMode();
+                    }
+                });
+
+                document.querySelectorAll('.btn, .window-btn, .theme-toggle, .nav-item, .nav-dropdown-btn, .exit-btn').forEach(btn => {
+                    btn.addEventListener('mousedown', function () {
+                        this.style.transform = 'scale(0.95)';
+                    });
+
+                    btn.addEventListener('mouseup', function () {
+                        this.style.transform = '';
+                    });
+
+                    btn.addEventListener('mouseleave', function () {
+                        this.style.transform = '';
+                    });
+
+                    const passiveOptions = { passive: true };
+                    btn.addEventListener('touchstart', function () {
+                        this.style.transform = 'scale(0.95)';
+                    }, passiveOptions);
+
+                    btn.addEventListener('touchend', function () {
+                        this.style.transform = '';
+                    }, passiveOptions);
+
+                    btn.addEventListener('touchcancel', function () {
+                        this.style.transform = '';
+                    }, passiveOptions);
+                });
+
+                const contentScroll = document.querySelector('.content-scroll');
+                if (contentScroll) {
+                    contentScroll.addEventListener('scroll', function () {
+                        clearTimeout(this.scrollTimeout);
+                        this.scrollTimeout = setTimeout(() => {
+                        }, 100);
+                    }, { passive: true });
+                }
+
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        if (document.getElementById('cropModal')?.classList.contains('active')) {
+                            setupCropArea();
+                        }
+                    }, 250);
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            window.saveSection = saveSection;
+            window.scrollToTop = scrollToTop;
+            window.exportData = exportData;
+            window.deleteAccount = deleteAccount;
+            window.resetPreferences = resetPreferences;
+            window.selectAllNotifications = selectAllNotifications;
+            window.saveProfileAndContinue = saveProfileAndContinue;
+
+        })();
+    </script>
+</body>
+
+</html>
